@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import time
 from dataclasses import dataclass, field
-from typing import Callable
+from typing import Any, Awaitable, Callable
 
 from harvest.config import GITHUB_REQUESTS_PER_MINUTE, WEB_REQUESTS_PER_SECOND
 
@@ -185,9 +185,9 @@ def get_rate_limiter() -> RateLimiter:
 
 async def rate_limited_request(
     source: str,
-    request_func: Callable[[], any],
+    request_func: Callable[[], Awaitable[Any]],
     max_retries: int = 3,
-) -> any:
+) -> Any:
     """Execute a request with rate limiting and retry logic.
 
     Args:

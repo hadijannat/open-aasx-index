@@ -229,7 +229,7 @@ class SitemapSource:
         for path in common_paths:
             sitemap_url = urljoin(base_url, path)
             content = self._fetch(sitemap_url)
-            if content and "<urlset" in content or "<sitemapindex" in content:
+            if content and ("<urlset" in content or "<sitemapindex" in content):
                 return [sitemap_url]
 
         return []

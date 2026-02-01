@@ -27,7 +27,7 @@ class VerificationResult:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for catalog storage."""
-        result = {
+        result: dict[str, Any] = {
             "status": self.status,
             "engine": self.engine,
             "exit_code": self.exit_code,
@@ -52,7 +52,8 @@ def _get_engine_version() -> str:
 def _parse_json_output(output: str) -> dict[str, Any] | None:
     """Parse JSON output from aas-test-engines."""
     try:
-        return json.loads(output)
+        parsed: dict[str, Any] = json.loads(output)
+        return parsed
     except json.JSONDecodeError:
         return None
 

@@ -154,7 +154,8 @@ class GitHubSource:
         try:
             response = client.get(url, params=params)
             response.raise_for_status()
-            return response.json()
+            result: dict[str, Any] = response.json()
+            return result
         except httpx.HTTPStatusError as e:
             if e.response.status_code == 403:
                 # Rate limited
@@ -172,7 +173,9 @@ class GitHubSource:
         try:
             url = f"{GITHUB_API}/repos/{owner}/{repo}/license"
             data = self._make_request(url)
-            return data.get("license", {}).get("spdx_id")
+            license_info = data.get("license", {})
+            spdx_id: str | None = license_info.get("spdx_id") if license_info else None
+            return spdx_id
         except httpx.HTTPError:
             return None
 

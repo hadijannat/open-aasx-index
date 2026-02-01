@@ -93,7 +93,7 @@ def _extract_filename(response: httpx.Response, url: str) -> str | None:
         for part in content_disp.split(";"):
             part = part.strip()
             if part.startswith("filename="):
-                filename = part[9:].strip('"\'')
+                filename: str = part[9:].strip('"\'')
                 return filename
 
     # Fall back to URL path

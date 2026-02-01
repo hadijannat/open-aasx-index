@@ -156,12 +156,12 @@ def extract_metadata(file_path: Path) -> ExtractionResult:
     try:
         with AASXReader(str(file_path)) as reader:
             # Create an object store to hold the loaded objects
-            object_store = model.DictObjectStore()
+            object_store: Any = model.DictObjectStore()
 
             # Create a file store for supplementary files (thumbnails, docs, etc.)
             from basyx.aas.adapter.aasx import DictSupplementaryFileContainer
 
-            file_store = DictSupplementaryFileContainer()
+            file_store: Any = DictSupplementaryFileContainer()
 
             # Read the AASX content into both stores
             reader.read_into(object_store, file_store)

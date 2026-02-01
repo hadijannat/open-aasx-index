@@ -92,7 +92,7 @@ class CatalogStorage:
 
     def read_all(self) -> list[CatalogEntry]:
         """Read all entries from the catalog."""
-        entries = []
+        entries: list[CatalogEntry] = []
         if not self.path.exists():
             return entries
 
