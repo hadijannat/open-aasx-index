@@ -46,7 +46,7 @@ jobs:
       - name: Run harvester
         id: harvest
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
           MAX_VALIDATE: ${{ github.event.inputs.max_validate || '200' }}
           DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
         run: |
