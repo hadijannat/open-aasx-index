@@ -71,3 +71,6 @@ site/dist/
 
 # Harvest logs
 harvest.log
+
+# Claude Code
+CLAUDE.md
