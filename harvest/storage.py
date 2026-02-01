@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Iterator
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any
 
 from harvest.config import CATALOG_NDJSON, STATE_FILE
 
@@ -81,7 +82,7 @@ class HarvestState:
 
     def mark_run(self) -> None:
         """Update the last run timestamp."""
-        self.last_run = datetime.now(timezone.utc).isoformat()
+        self.last_run = datetime.now(UTC).isoformat()
 
 
 class CatalogStorage:

@@ -141,8 +141,8 @@ def extract_metadata(file_path: Path) -> ExtractionResult:
         )
 
     try:
-        from basyx.aas.adapter.aasx import AASXReader
         from basyx.aas import model
+        from basyx.aas.adapter.aasx import AASXReader
     except ImportError as e:
         return ExtractionResult(
             success=False,

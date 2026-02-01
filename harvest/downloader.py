@@ -7,7 +7,6 @@ import tempfile
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import BinaryIO
 
 import httpx
 
@@ -269,10 +268,10 @@ def download_file(
                     filename=filename,
                 )
 
-    except httpx.TooManyRedirects:
-        raise TooManyRedirectsError(f"Too many redirects (>{MAX_REDIRECTS}) for {url}")
+    except httpx.TooManyRedirects as e:
+        raise TooManyRedirectsError(f"Too many redirects (>{MAX_REDIRECTS}) for {url}") from e
     except httpx.HTTPError as e:
-        raise DownloadFailedError(f"HTTP error: {e}")
+        raise DownloadFailedError(f"HTTP error: {e}") from e
 
 
 async def download_file_async(
@@ -369,7 +368,7 @@ async def download_file_async(
                     filename=filename,
                 )
 
-    except httpx.TooManyRedirects:
-        raise TooManyRedirectsError(f"Too many redirects (>{MAX_REDIRECTS}) for {url}")
+    except httpx.TooManyRedirects as e:
+        raise TooManyRedirectsError(f"Too many redirects (>{MAX_REDIRECTS}) for {url}") from e
     except httpx.HTTPError as e:
-        raise DownloadFailedError(f"HTTP error: {e}")
+        raise DownloadFailedError(f"HTTP error: {e}") from e

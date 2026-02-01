@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import sys
 import tempfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -157,7 +157,7 @@ def process_candidate(
                     "source_type": candidate.get("source_type", "unknown"),
                     "source_ref": candidate.get("source_ref"),
                     "license": candidate.get("license"),
-                    "discovered_at": datetime.now(timezone.utc).isoformat(),
+                    "discovered_at": datetime.now(UTC).isoformat(),
                 },
                 verification={
                     "status": "failed",
@@ -180,7 +180,7 @@ def process_candidate(
         extraction_result: ExtractionResult = extract_metadata(download_result.path)
 
         # Build catalog entry
-        now = datetime.now(timezone.utc).isoformat()
+        now = datetime.now(UTC).isoformat()
 
         return CatalogEntry(
             id=entry_id,

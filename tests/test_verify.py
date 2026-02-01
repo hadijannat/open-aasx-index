@@ -16,8 +16,8 @@ from harvest.verify import (
     VerificationResult,
     _count_errors,
     _parse_json_output,
-    verify_file,
     get_verification_summary,
+    verify_file,
 )
 
 

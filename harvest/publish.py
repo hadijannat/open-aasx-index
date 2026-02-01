@@ -8,7 +8,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from harvest.config import CATALOG_CSV, CATALOG_JSON, PUBLIC_DIR, STATS_JSON
+from harvest.config import PUBLIC_DIR
 from harvest.storage import CatalogStorage
 
 

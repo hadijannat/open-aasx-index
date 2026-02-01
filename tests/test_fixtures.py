@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from harvest.downloader import ZipBombError, inspect_zip
+from harvest.downloader import inspect_zip
 from harvest.extract import extract_metadata
 from harvest.verify import verify_file
 
