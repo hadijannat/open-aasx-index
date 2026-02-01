@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-aasx-index.github.io/schema/catalog.schema.json",
+  "title": "AASX Catalog Entry",
+  "description": "Schema for entries in the Open AASX Index catalog",
+  "type": "object",
+  "required": ["id", "file", "provenance", "verification"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier (sha256 hash of file content)",
+      "pattern": "^sha256-[a-f0-9]{64}$"
+    },
+    "file": {
+      "type": "object",
+      "description": "File information",
+      "required": ["url", "sha256"],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Download URL for the AASX file"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "File size in bytes"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA256 hash of file content"
+        },
+        "filename": {
+          "type": "string",
+          "description": "Original filename if available"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Where and when the file was discovered",
+      "required": ["source_type", "discovered_at"],
+      "properties": {
+        "source_type": {
+          "type": "string",
+          "enum": ["github", "seed", "sitemap", "commoncrawl"],
+          "description": "Discovery source type"
+        },
+        "source_ref": {
+          "type": "string",
+          "description": "Reference to the source (e.g., GitHub repo, seed URL)"
+        },
+        "license": {
+          "type": ["string", "null"],
+          "description": "License of the file if known (SPDX identifier)"
+        },
+        "discovered_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of discovery"
+        },
+        "last_verified_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of last verification"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "description": "Compliance verification results",
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["verified", "parseable", "failed"],
+          "description": "Verification status"
+        },
+        "engine": {
+          "type": "string",
+          "description": "Verification engine name and version"
+        },
+        "exit_code": {
+          "type": ["integer", "null"],
+          "description": "Exit code from verification tool"
+        },
+        "summary": {
+          "type": "string",
+          "description": "Brief summary of verification result"
+        },
+        "report_path": {
+          "type": "string",
+          "description": "Path to detailed verification report"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of error messages if any"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Extracted AAS metadata",
+      "properties": {
+        "shells": {
+          "type": "array",
+          "description": "Asset Administration Shells in the file",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id_short": {
+                "type": "string",
+                "description": "Short identifier"
+              },
+              "id": {
+                "type": "string",
+                "description": "Unique identifier (IRI)"
+              },
+              "global_asset_id": {
+                "type": "string",
+                "description": "Global asset identifier"
+              }
+            }
+          }
+        },
+        "submodels": {
+          "type": "array",
+          "description": "Submodels in the file",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id_short": {
+                "type": "string",
+                "description": "Short identifier"
+              },
+              "id": {
+                "type": "string",
+                "description": "Unique identifier (IRI)"
+              },
+              "semantic_id": {
+                "type": "string",
+                "description": "Semantic identifier reference"
+              }
+            }
+          }
+        },
+        "semantic_ids": {
+          "type": "array",
+          "description": "Aggregated list of all semantic IDs found",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

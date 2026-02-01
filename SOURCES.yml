@@ -1,0 +1,54 @@
+# AASX Source Configuration
+#
+# This file defines seed URLs for AASX discovery.
+# Each source should point to a page containing links to .aasx files.
+#
+# Source types:
+#   - seed: Direct page with AASX links (crawled for .aasx hrefs)
+#   - sitemap: Site with sitemap.xml (crawled via sitemap)
+#   - repo: GitHub repository (searched via API)
+
+# Allowed domains for crawling (sources outside this list require review)
+allowed_domains:
+  - admin-shell-io.github.io
+  - github.com
+  - industrialdigitaltwin.org
+  - eclipse.dev
+  - basyx.org
+
+# Seed sources - pages known to contain AASX files
+sources:
+  # IDTA official samples
+  - url: https://admin-shell-io.github.io/aas-specs-aasx-samples/
+    name: IDTA AAS Spec Samples
+    type: seed
+    notes: Official sample files from the AAS specification
+
+  # Eclipse BaSyx samples
+  - url: https://github.com/eclipse-basyx/basyx-java-server-sdk
+    name: BaSyx Java SDK
+    type: repo
+    notes: BaSyx server SDK may contain example AASX files
+
+  - url: https://github.com/eclipse-basyx/basyx-python-sdk
+    name: BaSyx Python SDK
+    type: repo
+    notes: BaSyx Python SDK examples
+
+  # AAS test engines test files
+  - url: https://github.com/admin-shell-io/aas-test-engines
+    name: AAS Test Engines
+    type: repo
+    notes: Test fixture files from the compliance checker
+
+# GitHub search topics (used by github.py source)
+github_topics:
+  - aasx
+  - aas
+  - asset-administration-shell
+  - digital-twin
+  - industry-4-0
+
+# GitHub code search extensions
+github_extensions:
+  - aasx

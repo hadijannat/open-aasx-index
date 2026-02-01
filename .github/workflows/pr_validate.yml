@@ -1,0 +1,150 @@
+name: PR Validation
+
+on:
+  pull_request:
+    paths:
+      - 'SOURCES.yml'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate-sources:
+    name: Validate SOURCES.yml
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml httpx
+
+      - name: Validate SOURCES.yml
+        id: validate
+        run: |
+          python << 'EOF'
+          import yaml
+          import httpx
+          import sys
+          import os
+
+          def validate_url(url: str, timeout: float = 10.0) -> tuple[bool, str]:
+              """Check if a URL is accessible."""
+              try:
+                  with httpx.Client(timeout=timeout, follow_redirects=True) as client:
+                      response = client.head(url)
+                      if response.status_code < 400:
+                          return True, f"OK ({response.status_code})"
+                      # Try GET if HEAD fails
+                      response = client.get(url)
+                      if response.status_code < 400:
+                          return True, f"OK ({response.status_code})"
+                      return False, f"HTTP {response.status_code}"
+              except httpx.TimeoutException:
+                  return False, "Timeout"
+              except httpx.HTTPError as e:
+                  return False, str(e)[:50]
+
+          # Load SOURCES.yml
+          with open('SOURCES.yml', 'r') as f:
+              config = yaml.safe_load(f)
+
+          sources = config.get('sources', [])
+          allowed_domains = set(config.get('allowed_domains', []))
+
+          results = []
+          has_errors = False
+
+          print("Validating SOURCES.yml...")
+          print(f"Found {len(sources)} sources and {len(allowed_domains)} allowed domains")
+          print()
+
+          for source in sources:
+              url = source.get('url', '')
+              name = source.get('name', url)
+              source_type = source.get('type', 'unknown')
+
+              ok, message = validate_url(url)
+              status = "✅" if ok else "❌"
+              results.append(f"| {status} | {name} | {source_type} | {message} |")
+
+              if not ok:
+                  has_errors = True
+
+              print(f"{status} {name}: {message}")
+
+          # Write results to file for PR comment
+          with open('validation_results.md', 'w') as f:
+              f.write("## SOURCES.yml Validation Results\n\n")
+              f.write(f"Validated {len(sources)} sources.\n\n")
+              f.write("| Status | Name | Type | Result |\n")
+              f.write("|--------|------|------|--------|\n")
+              for result in results:
+                  f.write(result + "\n")
+              f.write("\n")
+
+              if allowed_domains:
+                  f.write("### Allowed Domains\n\n")
+                  for domain in sorted(allowed_domains):
+                      f.write(f"- `{domain}`\n")
+
+              if has_errors:
+                  f.write("\n⚠️ **Some URLs failed validation.** Please check the URLs above.\n")
+
+          # Exit with error if any URL failed
+          if has_errors:
+              print("\n❌ Some URLs failed validation")
+              sys.exit(1)
+          else:
+              print("\n✅ All URLs validated successfully")
+          EOF
+
+      - name: Post PR comment
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            let body;
+            try {
+              body = fs.readFileSync('validation_results.md', 'utf8');
+            } catch (e) {
+              body = '## SOURCES.yml Validation\n\n❌ Validation script failed to run.';
+            }
+
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('SOURCES.yml Validation')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body
+              });
+            }

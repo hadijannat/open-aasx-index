@@ -1,0 +1,187 @@
+name: Weekly Harvest
+
+on:
+  schedule:
+    # Run every Sunday at 03:00 UTC
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      max_validate:
+        description: 'Maximum files to validate'
+        required: false
+        default: '200'
+      dry_run:
+        description: 'Dry run (no commits)'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  harvest:
+    name: Harvest AASX Files
+    runs-on: ubuntu-latest
+    outputs:
+      new_entries: ${{ steps.harvest.outputs.new_entries }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Run harvester
+        id: harvest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAX_VALIDATE: ${{ github.event.inputs.max_validate || '200' }}
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            python -m harvest --max-validate "$MAX_VALIDATE" --dry-run
+            echo "new_entries=0" >> "$GITHUB_OUTPUT"
+          else
+            python -m harvest --max-validate "$MAX_VALIDATE" 2>&1 | tee harvest.log
+            # Extract new entries count from log
+            NEW_ENTRIES=$(grep -oP 'New entries: \K\d+' harvest.log || echo "0")
+            echo "new_entries=$NEW_ENTRIES" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit data changes
+        if: env.DRY_RUN != 'true'
+        env:
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          NEW_ENTRIES: ${{ steps.harvest.outputs.new_entries }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Add data files
+          git add data/catalog.ndjson data/state/ data/reports/ || true
+          git add public/catalog.json public/catalog.csv public/stats.json || true
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            COMMIT_DATE=$(date -u +%Y-%m-%d)
+            git commit -m "chore: weekly harvest $COMMIT_DATE
+
+            New entries: $NEW_ENTRIES"
+            git push
+          fi
+
+      - name: Upload harvest log
+        uses: actions/upload-artifact@v4
+        with:
+          name: harvest-log
+          path: harvest.log
+          retention-days: 30
+
+  build-site:
+    name: Build Site
+    needs: harvest
+    if: github.event.inputs.dry_run != 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install dependencies
+        working-directory: site
+        run: npm ci
+
+      - name: Copy catalog data to site
+        run: |
+          mkdir -p site/public
+          cp public/catalog.json site/public/ || true
+          cp public/stats.json site/public/ || true
+
+      - name: Build site
+        working-directory: site
+        run: npm run build
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy-site:
+    name: Deploy to GitHub Pages
+    needs: build-site
+    if: github.event.inputs.dry_run != 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  create-release:
+    name: Create Weekly Release
+    needs: [harvest, deploy-site]
+    if: github.event.inputs.dry_run != 'true' && needs.harvest.outputs.new_entries != '0'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Create release archive
+        run: |
+          mkdir -p release
+          cp public/catalog.json release/
+          cp public/catalog.csv release/
+          cp public/stats.json release/
+          cd release && zip -r ../catalog.zip .
+
+      - name: Get release tag
+        id: tag
+        run: |
+          TAG="v$(date -u +%Y.%m.%d)"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        env:
+          NEW_ENTRIES: ${{ needs.harvest.outputs.new_entries }}
+          RELEASE_TAG: ${{ steps.tag.outputs.tag }}
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: Weekly Release ${{ steps.tag.outputs.tag }}
+          body: |
+            Weekly catalog update.
+
+            **Changes:**
+            - New entries: ${{ needs.harvest.outputs.new_entries }}
+
+            **Downloads:**
+            - `catalog.zip` - Full catalog (JSON + CSV + stats)
+          files: catalog.zip
+          generate_release_notes: false
