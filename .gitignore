@@ -68,3 +68,6 @@ site/dist/
 # Environment variables
 .env
 .env.local
+
+# Harvest logs
+harvest.log
