@@ -162,9 +162,7 @@ class TestCommonCrawlSource:
             text=cdx_response,
         )
 
-        initial_state = CommonCrawlState(
-            processed_urls={"https://example.com/file.aasx"}
-        )
+        initial_state = CommonCrawlState(processed_urls={"https://example.com/file.aasx"})
 
         with CommonCrawlSource(allowed_domains={"example.com"}) as source:
             candidates, state = source.search_aasx_urls(initial_state)
@@ -196,10 +194,7 @@ class TestCommonCrawlSource:
     def test_max_results_limit(self) -> None:
         """Test that max_results limit is respected."""
         cdx_response = "\n".join(
-            [
-                json.dumps({"url": f"https://example.com/file{i}.aasx"})
-                for i in range(10)
-            ]
+            [json.dumps({"url": f"https://example.com/file{i}.aasx"}) for i in range(10)]
         )
         respx.get("https://index.commoncrawl.org/CC-MAIN-2024-10-index").respond(
             200,
@@ -243,9 +238,7 @@ class TestDiscoverCommoncrawl:
             headers={"X-CDX-Next-Page-Token": "next_page_cursor"},
         )
 
-        initial_state = CommonCrawlState(
-            processed_urls={"https://example.com/old.aasx"}
-        )
+        initial_state = CommonCrawlState(processed_urls={"https://example.com/old.aasx"})
 
         candidates, new_state = discover_commoncrawl(
             allowed_domains={"example.com"},

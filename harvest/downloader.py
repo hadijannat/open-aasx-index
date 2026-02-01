@@ -92,7 +92,7 @@ def _extract_filename(response: httpx.Response, url: str) -> str | None:
         for part in content_disp.split(";"):
             part = part.strip()
             if part.startswith("filename="):
-                filename: str = part[9:].strip('"\'')
+                filename: str = part[9:].strip("\"'")
                 return filename
 
     # Fall back to URL path
@@ -240,9 +240,7 @@ def download_file(
                             dest_path.unlink(missing_ok=True)
                             mb = total_bytes / (1024 * 1024)
                             max_mb = max_bytes / (1024 * 1024)
-                            raise FileTooLargeError(
-                                f"File too large: >{mb:.1f}MB > {max_mb:.1f}MB"
-                            )
+                            raise FileTooLargeError(f"File too large: >{mb:.1f}MB > {max_mb:.1f}MB")
                         f.write(chunk)
                         hasher.update(chunk)
 
@@ -342,9 +340,7 @@ async def download_file_async(
                             dest_path.unlink(missing_ok=True)
                             mb = total_bytes / (1024 * 1024)
                             max_mb = max_bytes / (1024 * 1024)
-                            raise FileTooLargeError(
-                                f"File too large: >{mb:.1f}MB > {max_mb:.1f}MB"
-                            )
+                            raise FileTooLargeError(f"File too large: >{mb:.1f}MB > {max_mb:.1f}MB")
                         f.write(chunk)
                         hasher.update(chunk)
 

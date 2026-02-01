@@ -279,9 +279,7 @@ class TestPublishCatalog:
 class TestGetCatalogStats:
     """Tests for the get_catalog_stats function."""
 
-    def test_get_catalog_stats(
-        self, temp_dir: Path, sample_entries: list[CatalogEntry]
-    ) -> None:
+    def test_get_catalog_stats(self, temp_dir: Path, sample_entries: list[CatalogEntry]) -> None:
         """Test getting stats without writing files."""
         catalog_path = temp_dir / "catalog.ndjson"
         catalog = CatalogStorage(catalog_path)

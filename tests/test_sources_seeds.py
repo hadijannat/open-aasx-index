@@ -54,10 +54,10 @@ class TestExtractAasxLinks:
 
     def test_extract_quoted_links(self) -> None:
         """Test extraction of quoted href attributes."""
-        html = '''
+        html = """
         <a href="https://example.com/file1.aasx">File 1</a>
         <a href='https://example.com/file2.aasx'>File 2</a>
-        '''
+        """
         links = _extract_aasx_links(html, "https://base.com")
 
         assert len(links) == 2
@@ -96,10 +96,10 @@ class TestExtractAasxLinks:
 
     def test_deduplication(self) -> None:
         """Test that duplicate links are removed."""
-        html = '''
+        html = """
         <a href="same.aasx">Link 1</a>
         <a href="same.aasx">Link 2</a>
-        '''
+        """
         links = _extract_aasx_links(html, "https://example.com/")
 
         assert len(links) == 1
@@ -223,7 +223,7 @@ class TestSeedSource:
     @respx.mock
     def test_crawl_seed(self, sample_config: dict) -> None:
         """Test crawling a seed URL."""
-        html = '''
+        html = """
         <html>
         <body>
             <a href="https://example.com/sample1.aasx">Sample 1</a>
@@ -231,7 +231,7 @@ class TestSeedSource:
             <a href="https://blocked.com/blocked.aasx">Blocked</a>
         </body>
         </html>
-        '''
+        """
         respx.get("https://example.com/aasx-samples").respond(200, text=html)
 
         with SeedSource(config=sample_config) as source:
@@ -287,9 +287,7 @@ class TestDiscoverSeeds:
         """Test the discover_seeds convenience function."""
         config = {
             "allowed_domains": ["example.com"],
-            "sources": [
-                {"url": "https://example.com/samples", "name": "Test", "type": "seed"}
-            ],
+            "sources": [{"url": "https://example.com/samples", "name": "Test", "type": "seed"}],
         }
 
         respx.get("https://example.com/samples").respond(

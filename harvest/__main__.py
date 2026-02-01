@@ -86,9 +86,7 @@ def discover_candidates(
         logger.info("Running sitemap discovery...")
         # Get base URLs from sources that have sitemaps
         base_urls = [
-            s["url"]
-            for s in sources_config.get("sources", [])
-            if s.get("type") == "sitemap"
+            s["url"] for s in sources_config.get("sources", []) if s.get("type") == "sitemap"
         ]
         if base_urls:
             sitemap_candidates = discover_sitemaps(

@@ -102,8 +102,7 @@ class TestCountErrors:
         """Test that errors are limited to 10."""
         result = {
             "sub_checks": [
-                {"name": f"check{i}", "ok": False, "message": f"Error {i}"}
-                for i in range(20)
+                {"name": f"check{i}", "ok": False, "message": f"Error {i}"} for i in range(20)
             ]
         }
         count, errors = _count_errors(result)

@@ -43,6 +43,7 @@ def _get_engine_version() -> str:
     """Get the aas-test-engines version string."""
     try:
         from aas_test_engines import version
+
         return f"aas-test-engines/{version}"
     except ImportError:
         return "aas-test-engines/unknown"
