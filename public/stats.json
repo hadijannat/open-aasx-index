@@ -1,12 +1,13 @@
 {
   "by_source": {
-    "github": 2
+    "github": 2,
+    "seed": 33
   },
   "by_status": {
     "failed": 1,
-    "parseable": 1
+    "parseable": 34
   },
   "top_semantic_ids": {},
-  "total_entries": 2,
+  "total_entries": 35,
   "unique_semantic_ids": 0
 }
