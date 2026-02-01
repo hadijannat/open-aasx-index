@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import type { CatalogEntry, CatalogStats } from '../types/catalog'
 
-const CATALOG_URL = '/catalog.json'
-const STATS_URL = '/stats.json'
+// Use Vite's base URL for GitHub Pages compatibility
+const BASE_URL = import.meta.env.BASE_URL
+const CATALOG_URL = `${BASE_URL}catalog.json`
+const STATS_URL = `${BASE_URL}stats.json`
 
 export function useCatalog() {
   const [entries, setEntries] = useState<CatalogEntry[]>([])
