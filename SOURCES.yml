@@ -11,6 +11,7 @@
 # Allowed domains for crawling (sources outside this list require review)
 allowed_domains:
   - admin-shell-io.github.io
+  - admin-shell-io.com
   - github.com
   - industrialdigitaltwin.org
   - eclipse.dev
@@ -19,6 +20,11 @@ allowed_domains:
 # Seed sources - pages known to contain AASX files
 sources:
   # IDTA official samples
+  - url: https://admin-shell-io.com/samples/
+    name: Admin Shell IO Samples
+    type: seed
+    notes: Official AAS sample files from admin-shell-io.com
+
   - url: https://admin-shell-io.github.io/aas-specs-aasx-samples/
     name: IDTA AAS Spec Samples
     type: seed
