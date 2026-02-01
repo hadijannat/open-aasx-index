@@ -1,0 +1,44 @@
+[
+  {
+    "file": {
+      "sha256": "",
+      "url": "https://raw.githubusercontent.com/admin-shell-io/aas-test-engines/56facc4b0e833feb2f75473b5cef15c92ed0fb6e/bin/check_servers/test_data/TestDataWithThumbnail.aasx"
+    },
+    "id": "sha256-0000000000000000000000000000000000000000000000000000000000000000",
+    "metadata": {},
+    "provenance": {
+      "discovered_at": "2026-02-01T14:59:08.687139+00:00",
+      "license": "Apache-2.0",
+      "source_ref": "admin-shell-io/aas-test-engines",
+      "source_type": "github"
+    },
+    "verification": {
+      "status": "failed",
+      "summary": "Download failed: Suspicious archive: Invalid ZIP file: File is not a zip file"
+    }
+  },
+  {
+    "file": {
+      "filename": "GitIgnore.AASX",
+      "sha256": "efbdf9f2ea599fd7fa9be04107667e1df47494db3331e8c88b3f9972ad1fee71",
+      "size_bytes": 12,
+      "url": "https://raw.githubusercontent.com/GregTrevellick/FilesForEveryExtension/1f489433431c3cd877fa7943ea10101f8669740f/ByLetter/A/GitIgnore.AASX"
+    },
+    "id": "sha256-efbdf9f2ea599fd7fa9be04107667e1df47494db3331e8c88b3f9972ad1fee71",
+    "metadata": {},
+    "provenance": {
+      "discovered_at": "2026-02-01T14:59:08.357020+00:00",
+      "last_verified_at": "2026-02-01T14:59:08.357020+00:00",
+      "license": null,
+      "source_ref": "GregTrevellick/FilesForEveryExtension",
+      "source_type": "github"
+    },
+    "verification": {
+      "engine": "aas-test-engines/<function version at 0x7f4fcd5b28e0>",
+      "exit_code": 1,
+      "report_path": "data/reports/efbdf9f2ea599fd7fa9be04107667e1df47494db3331e8c88b3f9972ad1fee71.json",
+      "status": "parseable",
+      "summary": "File parseable but 0 compliance check(s) failed"
+    }
+  }
+]
