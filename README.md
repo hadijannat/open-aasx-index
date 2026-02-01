@@ -1,113 +1,270 @@
 # Open AASX Index
 
-An open, automated index of publicly available AASX (Asset Administration Shell) files with compliance verification.
+**The community catalog of verified Asset Administration Shell files.**
 
-## Overview
+Discover, download, and contribute AASX files from across the web — all verified against the official AAS specification.
 
-Open AASX Index discovers, verifies, and catalogs AASX files from across the web. Every file is checked against the official AAS specification using [aas-test-engines](https://github.com/admin-shell-io/aas-test-engines).
+[![Catalog Size](https://img.shields.io/badge/dynamic/json?url=https://hadijannat.github.io/open-aasx-index/stats.json&query=$.total&label=AASX%20Files&color=blue)]()
+[![Verified](https://img.shields.io/badge/dynamic/json?url=https://hadijannat.github.io/open-aasx-index/stats.json&query=$.verified&label=Verified&color=green)]()
+[![Weekly Update](https://img.shields.io/badge/Updated-Weekly-brightgreen)]()
 
-### Verification Policy
+[**Browse the Catalog →**](https://hadijannat.github.io/open-aasx-index/)
 
-Each discovered AASX file receives one of three statuses:
+---
 
-| Status | Description |
-|--------|-------------|
-| `verified` | Passes all aas-test-engines compliance checks |
-| `parseable` | Opens as valid ZIP/AASX but fails some compliance checks |
-| `failed` | Cannot be downloaded or opened |
+## What is this?
 
-### Data Format
+Open AASX Index automatically discovers AASX files from GitHub repositories, official sources, and community contributions. Every file is:
 
-The catalog is published in multiple formats:
+- **Downloaded** safely (size limits, zip-bomb detection)
+- **Verified** against the AAS specification using [aas-test-engines](https://github.com/admin-shell-io/aas-test-engines)
+- **Cataloged** with metadata extracted via [BaSyx SDK](https://github.com/eclipse-basyx/basyx-python-sdk)
+- **Published** weekly as JSON, CSV, and a searchable website
 
-- `public/catalog.json` — Full catalog as JSON array
-- `public/catalog.csv` — Key fields for quick export
-- `public/stats.json` — Aggregate statistics
+---
 
-See [data/schema/catalog.schema.json](data/schema/catalog.schema.json) for the complete record schema.
+## Choose Your Path
 
-## Quick Start
+### I want to find AASX files
 
-### Browse the Index
+Browse the catalog to discover verified AAS files for your research or project.
 
-Visit **[open-aasx-index.github.io](https://open-aasx-index.github.io)** to search and filter the catalog.
-
-### Use the Data
-
-```bash
-# Download the full catalog
-curl -O https://open-aasx-index.github.io/catalog.json
-
-# Query with jq
-jq '.[] | select(.verification.status == "verified")' catalog.json
+```mermaid
+flowchart LR
+    A[Visit Website] --> B[Search & Filter]
+    B --> C[Preview Metadata]
+    C --> D[Download AASX]
 ```
 
-### Run Locally
+**[Open the Catalog →](https://hadijannat.github.io/open-aasx-index/)**
+
+---
+
+### I want to contribute AASX sources
+
+Know a website or repository with AASX files? Add it to our sources and we'll automatically discover and verify them.
+
+```mermaid
+flowchart LR
+    A[Fork Repo] --> B[Edit SOURCES.yml]
+    B --> C[Submit PR]
+    C --> D[Auto-Harvest]
+    D --> E[Files in Catalog!]
+```
+
+**[How to Contribute →](#contributing-sources)**
+
+---
+
+### I want to use the data
+
+Download the catalog for your own tools, research, or integration.
+
+```mermaid
+flowchart LR
+    A[Choose Format] --> B{JSON or CSV?}
+    B -->|JSON| C[Full metadata]
+    B -->|CSV| D[Quick export]
+    C --> E[Integrate]
+    D --> E
+```
+
+**[Download & API →](#download-the-data)**
+
+---
+
+## Contributing Sources
+
+Adding a new source takes just 3 steps:
+
+### Step 1: Fork & Edit
+
+Edit `SOURCES.yml` and add your source:
+
+```yaml
+sources:
+  # Your new source
+  - url: https://example.com/aasx-samples/
+    name: Example Corp Digital Twin Samples
+    type: seed
+    notes: Official AASX files from Example Corp
+```
+
+**Source types:**
+
+| Type | Use for |
+|------|---------|
+| `seed` | Web pages with direct `.aasx` download links |
+| `repo` | GitHub repositories containing AASX files |
+
+### Step 2: Submit a Pull Request
+
+1. Commit your changes
+2. Open a PR against `main`
+3. Our CI will validate your YAML syntax
+
+### Step 3: Watch the Magic
+
+Once merged, the weekly harvest will:
+1. Crawl your source for `.aasx` links
+2. Download and verify each file
+3. Add verified files to the catalog
+4. Update the website automatically
+
+```mermaid
+flowchart TB
+    subgraph You
+        A[Add URL to SOURCES.yml] --> B[Open Pull Request]
+    end
+    subgraph Automated
+        B --> C{PR Merged?}
+        C -->|Yes| D[Weekly Harvest Runs]
+        D --> E[Discover AASX Files]
+        E --> F[Verify with aas-test-engines]
+        F --> G[Publish to Catalog]
+        G --> H[Live on Website!]
+    end
+```
+
+> **Can't wait for Sunday?** Maintainers can trigger the harvest manually via GitHub Actions.
+
+---
+
+## Download the Data
+
+The catalog is freely available in multiple formats:
+
+| Format | Best For | Link |
+|--------|----------|------|
+| **JSON** | Full metadata, programmatic access | [catalog.json](https://hadijannat.github.io/open-aasx-index/catalog.json) |
+| **CSV** | Spreadsheets, quick analysis | [catalog.csv](https://hadijannat.github.io/open-aasx-index/catalog.csv) |
+| **Stats** | Dashboard widgets, monitoring | [stats.json](https://hadijannat.github.io/open-aasx-index/stats.json) |
+
+### Quick Examples
+
+**Download with curl:**
+```bash
+curl -O https://hadijannat.github.io/open-aasx-index/catalog.json
+```
+
+**Filter verified files with jq:**
+```bash
+jq '[.[] | select(.verification.status == "verified")]' catalog.json
+```
+
+**Load in Python:**
+```python
+import requests
+
+catalog = requests.get(
+    "https://hadijannat.github.io/open-aasx-index/catalog.json"
+).json()
+
+verified = [f for f in catalog if f["verification"]["status"] == "verified"]
+print(f"Found {len(verified)} verified AASX files")
+```
+
+### Data Schema
+
+Each catalog entry includes:
+
+| Field | Description |
+|-------|-------------|
+| `id` | Unique identifier (SHA256 of URL) |
+| `url` | Direct download link |
+| `file.size_bytes` | File size |
+| `file.sha256` | Content hash for integrity |
+| `verification.status` | `verified`, `parseable`, or `failed` |
+| `verification.errors` | List of compliance issues (if any) |
+| `metadata` | Extracted AAS metadata (shells, submodels) |
+
+Full schema: [catalog.schema.json](data/schema/catalog.schema.json)
+
+---
+
+## How Verification Works
+
+Every discovered file goes through a verification pipeline:
+
+```mermaid
+flowchart LR
+    A[Discover URL] --> B[Download]
+    B --> C{Safe?}
+    C -->|No| X[Reject]
+    C -->|Yes| D[Verify AAS]
+    D --> E{Compliant?}
+    E -->|Full| F[verified]
+    E -->|Partial| G[parseable]
+    E -->|No| H[failed]
+```
+
+### Verification Statuses
+
+| Status | Meaning |
+|--------|---------|
+| `verified` | Passes all [aas-test-engines](https://github.com/admin-shell-io/aas-test-engines) compliance checks |
+| `parseable` | Valid ZIP/AASX structure but fails some AAS compliance checks |
+| `failed` | Cannot be downloaded, opened, or parsed |
+
+### Safety Measures
+
+The harvester protects against malicious files:
+
+- **Size limits**: 50 MB download, 100 MB uncompressed
+- **Zip-bomb detection**: Entry count and compression ratio checks
+- **Rate limiting**: Respects API limits (GitHub: 10 req/min)
+- **Domain allowlist**: Only crawls trusted domains
+
+---
+
+## Run Locally
 
 ```bash
-# Install dependencies
+# Install
 pip install -e ".[dev]"
 
-# Run the harvester (dry run)
+# Dry run (no downloads)
 python -m harvest --dry-run
 
-# Run with limits
-python -m harvest --max-validate 10 --max-github 20
+# Limited run
+python -m harvest --max-validate 10
 ```
 
-## Architecture
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full development setup.
 
-```
-┌─────────────────┐     ┌──────────────┐     ┌─────────────┐
-│  Discovery      │────▶│  Download    │────▶│  Verify     │
-│  - GitHub       │     │  - Size cap  │     │  - aas-test │
-│  - Seeds        │     │  - Zip-bomb  │     │  - engines  │
-│  - Sitemap      │     │    detection │     │             │
-│  - CommonCrawl  │     └──────────────┘     └─────────────┘
-└─────────────────┘                                 │
-                                                    ▼
-┌─────────────────┐     ┌──────────────┐     ┌─────────────┐
-│  Publish        │◀────│  Extract     │◀────│  Catalog    │
-│  - JSON/CSV     │     │  - BaSyx SDK │     │  - NDJSON   │
-│  - Stats        │     │  - Metadata  │     │  - Dedup    │
-│  - Website      │     │              │     │             │
-└─────────────────┘     └──────────────┘     └─────────────┘
-```
-
-## Safety Measures
-
-The harvester includes multiple safety checks:
-
-- **Size limits**: Max 50MB download, 100MB uncompressed
-- **Zip-bomb detection**: Entry count, compression ratio checks
-- **Rate limiting**: Respects API limits (GitHub: 10 req/min)
-- **Exponential backoff**: On 429/403 responses
-
-## Contributing
-
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-### Adding Sources
-
-To suggest new AASX sources, edit `SOURCES.yml` and submit a PR. URLs must:
-- Point to publicly accessible pages
-- Contain links to `.aasx` files
-- Be from reputable sources
-
-### Reporting Issues
-
-- Found a broken link? Open an issue
-- Verification incorrect? Include the file URL and expected result
-- Security concern? See [SECURITY.md](SECURITY.md)
+---
 
 ## License
 
 This project is dedicated to the public domain under [CC0 1.0](LICENSE).
 
-The catalog data (`public/`) is also CC0. Individual AASX files retain their original licenses as noted in the `provenance.license` field.
+- **Code**: CC0 — use freely, no attribution required
+- **Catalog data**: CC0 — download, modify, redistribute freely
+- **Individual AASX files**: Retain their original licenses (see `provenance.license` field)
+
+---
 
 ## Acknowledgments
 
-- [aas-test-engines](https://github.com/admin-shell-io/aas-test-engines) for compliance verification
-- [BaSyx Python SDK](https://github.com/eclipse-basyx/basyx-python-sdk) for metadata extraction
-- [IDTA](https://industrialdigitaltwin.org/) for the AAS specification
+Built with:
+
+- [aas-test-engines](https://github.com/admin-shell-io/aas-test-engines) — AAS compliance verification
+- [BaSyx Python SDK](https://github.com/eclipse-basyx/basyx-python-sdk) — Metadata extraction
+- [IDTA](https://industrialdigitaltwin.org/) — AAS specification
+
+---
+
+## Links
+
+| Resource | URL |
+|----------|-----|
+| Website | [hadijannat.github.io/open-aasx-index](https://hadijannat.github.io/open-aasx-index/) |
+| Catalog JSON | [catalog.json](https://hadijannat.github.io/open-aasx-index/catalog.json) |
+| Report Issue | [GitHub Issues](https://github.com/hadijannat/open-aasx-index/issues) |
+| Discussions | [GitHub Discussions](https://github.com/hadijannat/open-aasx-index/discussions) |
+
+---
+
+<p align="center">
+  <i>Helping the AAS community find and share digital twin data.</i>
+</p>
