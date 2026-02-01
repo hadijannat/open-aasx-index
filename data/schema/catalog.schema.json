@@ -14,7 +14,7 @@
     "file": {
       "type": "object",
       "description": "File information",
-      "required": ["url", "sha256"],
+      "required": ["url"],
       "properties": {
         "url": {
           "type": "string",
@@ -28,8 +28,8 @@
         },
         "sha256": {
           "type": "string",
-          "pattern": "^[a-f0-9]{64}$",
-          "description": "SHA256 hash of file content"
+          "pattern": "^([a-f0-9]{64})?$",
+          "description": "SHA256 hash of file content (empty for failed downloads)"
         },
         "filename": {
           "type": "string",
