@@ -2,14 +2,14 @@
   {
     "file": {
       "sha256": "",
-      "url": "https://raw.githubusercontent.com/FelixNaehrer/PiCar_AAS/9d94bd7db9ef66b4e846afbcc21bca2cc68b4c45/aas_files/aasx/PiCarAAS-2.aasx"
+      "url": "https://raw.githubusercontent.com/admin-shell-io/aas-test-engines/56facc4b0e833feb2f75473b5cef15c92ed0fb6e/bin/check_servers/test_data/TestDataWithThumbnail.aasx"
     },
     "id": "sha256-0000000000000000000000000000000000000000000000000000000000000000",
     "metadata": {},
     "provenance": {
-      "discovered_at": "2026-02-01T15:47:21.137082+00:00",
-      "license": null,
-      "source_ref": "FelixNaehrer/PiCar_AAS",
+      "discovered_at": "2026-02-08T04:01:56.525042+00:00",
+      "license": "Apache-2.0",
+      "source_ref": "admin-shell-io/aas-test-engines",
       "source_type": "github"
     },
     "verification": {
