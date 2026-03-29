@@ -2,14 +2,14 @@
   {
     "file": {
       "sha256": "",
-      "url": "https://raw.githubusercontent.com/admin-shell-io/aas-test-engines/56facc4b0e833feb2f75473b5cef15c92ed0fb6e/bin/check_servers/test_data/TestDataWithThumbnail.aasx"
+      "url": "https://raw.githubusercontent.com/GfSE/CASCaDE-Ontology/f3ce712667c77edaa722d4245681576d092491e7/AAS/ElectricalElectronicalDesign.aasx"
     },
     "id": "sha256-0000000000000000000000000000000000000000000000000000000000000000",
     "metadata": {},
     "provenance": {
-      "discovered_at": "2026-03-22T03:52:21.719377+00:00",
-      "license": "Apache-2.0",
-      "source_ref": "admin-shell-io/aas-test-engines",
+      "discovered_at": "2026-03-29T04:02:56.644555+00:00",
+      "license": null,
+      "source_ref": "GfSE/CASCaDE-Ontology",
       "source_type": "github"
     },
     "verification": {
