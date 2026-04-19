@@ -2,12 +2,12 @@
   {
     "file": {
       "sha256": "",
-      "url": "https://raw.githubusercontent.com/GfSE/CASCaDE-Ontology/1a49ef36ec077b23f1d6caaf4a50b541a3a3e696/AAS/DesignProductAssetInstance.aasx"
+      "url": "https://raw.githubusercontent.com/GfSE/CASCaDE-Ontology/1a49ef36ec077b23f1d6caaf4a50b541a3a3e696/AAS/ElectricalElectronicalDesign.aasx"
     },
     "id": "sha256-0000000000000000000000000000000000000000000000000000000000000000",
     "metadata": {},
     "provenance": {
-      "discovered_at": "2026-04-12T04:05:08.582713+00:00",
+      "discovered_at": "2026-04-19T04:06:47.491918+00:00",
       "license": null,
       "source_ref": "GfSE/CASCaDE-Ontology",
       "source_type": "github"
