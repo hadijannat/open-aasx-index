@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import sys
 import tempfile
@@ -40,6 +41,28 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def _load_github_state(cursor: str | None) -> GitHubSearchState:
+    """Rebuild GitHub search state from a persisted cursor.
+
+    Accepts the current JSON form ``{"code_search_page": ...}`` and the legacy
+    plain-integer cursor (which only tracked the code-search page).
+    """
+    state = GitHubSearchState()
+    if not cursor:
+        return state
+    try:
+        data = json.loads(cursor)
+    except (ValueError, TypeError):
+        data = None
+    if isinstance(data, dict):
+        state.code_search_page = int(data.get("code_search_page", 1))
+        state.json_search_page = int(data.get("json_search_page", 1))
+        state.xml_search_page = int(data.get("xml_search_page", 1))
+    elif cursor.isdigit():
+        state.code_search_page = int(cursor)
+    return state
+
+
 def discover_candidates(
     config: HarvestConfig,
     state: HarvestState,
@@ -61,16 +84,22 @@ def discover_candidates(
     # GitHub source
     if config.source is None or config.source == "github":
         logger.info("Running GitHub discovery...")
-        github_state = GitHubSearchState()
-        if state.github_cursor:
-            github_state.code_search_page = int(state.github_cursor)
+        github_state = _load_github_state(state.github_cursor)
 
         github_candidates, new_github_state = discover_github(
             max_results=config.max_github,
             state=github_state,
         )
         candidates.extend(github_candidates)
-        state.github_cursor = str(new_github_state.code_search_page)
+        # Persist all per-format search pages so deeper pages are reached over
+        # successive runs (cursor is JSON; legacy plain-int cursors still load).
+        state.github_cursor = json.dumps(
+            {
+                "code_search_page": new_github_state.code_search_page,
+                "json_search_page": new_github_state.json_search_page,
+                "xml_search_page": new_github_state.xml_search_page,
+            }
+        )
         logger.info(f"GitHub: found {len(github_candidates)} candidates")
 
     # Seeds source
@@ -178,12 +207,14 @@ def process_candidate(
             logger.info(f"Skipping non-AAS {aas_format} file: {url}")
             return None
 
-        # Verify
+        # Verify (pass the upstream-detected format so JSON/XML aren't routed
+        # to the AASX verifier when the filename can't be recovered).
         verification_result: VerificationResult = verify_file(
             file_path=download_result.path,
             save_report=True,
             reports_dir=config.reports_dir,
             sha256=sha256,
+            aas_format=aas_format,
         )
 
         # Extract metadata
@@ -269,9 +300,11 @@ def run_harvest(config: HarvestConfig) -> int:
             break
 
         entry = process_candidate(candidate, config)
+        # Mark the URL seen whether or not it produced an entry, so permanent
+        # skips (e.g. non-AAS JSON/XML) aren't re-downloaded every run.
+        state.seen_urls.add(candidate.get("url", ""))
         if entry:
             new_entries.append(entry)
-            state.seen_urls.add(candidate.get("url", ""))
             if entry.file.get("sha256"):
                 state.seen_sha256.add(entry.file["sha256"])
 

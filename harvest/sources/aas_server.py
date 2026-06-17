@@ -151,7 +151,12 @@ class AasServerSource:
             page = data.get("result", [])
             if not isinstance(page, list) or not page:
                 break
-            items.extend(p for p in page if isinstance(p, dict))
+            valid_items = [p for p in page if isinstance(p, dict)]
+            if not valid_items:
+                # Non-empty page with no usable items: stop to avoid looping
+                # forever when a malformed page also carries a cursor.
+                break
+            items.extend(valid_items)
 
             cursor = (data.get("paging_metadata") or {}).get("cursor")
             if not cursor:
@@ -218,10 +223,12 @@ class AasServerSource:
         if semantic_ids:
             metadata["semantic_ids"] = sorted(set(semantic_ids))
 
+        # Registries expose shells via /shell-descriptors; repositories via /shells.
+        entry_path = "shell-descriptors" if server.server_type == "registry" else "shells"
         now = datetime.now(UTC).isoformat()
         return CatalogEntry(
             id=_entry_id_for(aas_id),
-            file={"url": f"{server.endpoint('shells')}/{_encode_id(aas_id)}", "sha256": ""},
+            file={"url": f"{server.endpoint(entry_path)}/{_encode_id(aas_id)}", "sha256": ""},
             provenance={
                 "source_type": "aas_server",
                 "source_ref": server.base_url,
@@ -254,7 +261,7 @@ class AasServerSource:
                 logger.info(f"  {server.name}: no shells (unreachable or empty)")
                 continue
 
-            semantic_by_submodel = self._submodel_semantic_ids(server, self.max_results)
+            semantic_by_submodel = self._submodel_semantic_ids(server, remaining)
 
             added = 0
             for shell in shells:

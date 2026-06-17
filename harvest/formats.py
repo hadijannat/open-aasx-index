@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from urllib.parse import urlsplit
 
 AasFormat = str  # "aasx" | "json" | "xml"
 
@@ -31,7 +32,10 @@ _SNIFF_BYTES = 8192
 
 def detect_format(name: str | Path) -> AasFormat | None:
     """Return the AAS format implied by a filename/URL, or None if unsupported."""
-    lower = str(name).lower()
+    raw = str(name)
+    # Strip query string/fragment so URLs like ".../env.xml?download=1" match.
+    path_only = urlsplit(raw).path if "://" in raw else raw.split("?", 1)[0].split("#", 1)[0]
+    lower = path_only.lower()
     if lower.endswith(".aasx"):
         return "aasx"
     if lower.endswith(".json"):

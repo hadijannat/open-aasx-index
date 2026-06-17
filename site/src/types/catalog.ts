@@ -5,6 +5,7 @@ export interface CatalogEntry {
     size_bytes?: number
     sha256: string
     filename?: string
+    format?: 'aasx' | 'json' | 'xml'
   }
   provenance: {
     source_type: 'github' | 'seed' | 'sitemap' | 'commoncrawl' | 'aas_server'

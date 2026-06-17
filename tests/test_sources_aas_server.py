@@ -107,6 +107,22 @@ def test_discover_enumerates_shells_with_semantic_ids() -> None:
 
 
 @respx.mock
+def test_registry_emits_shell_descriptor_urls() -> None:
+    server = AasServerConfig(
+        base_url=BASE, name="Registry", server_type="registry", api_prefix=PREFIX
+    )
+    respx.get(f"{BASE}{PREFIX}/shell-descriptors").respond(
+        200, json={"result": [_shell("urn:aas:9", "Reg", [])], "paging_metadata": {}}
+    )
+
+    with AasServerSource([server], max_results=10) as source:
+        entries = source.discover()
+
+    assert len(entries) == 1
+    assert entries[0].file["url"] == f"{BASE}{PREFIX}/shell-descriptors/{_encode_id('urn:aas:9')}"
+
+
+@respx.mock
 def test_pagination_follows_cursor() -> None:
     route = respx.get(f"{BASE}{PREFIX}/shells")
     route.side_effect = [

@@ -145,8 +145,9 @@ def _extract_links_by_extension(html: str, base_url: str, extensions: tuple[str,
         Sorted list of absolute URLs
     """
     # Build an alternation like (?:aasx|json|xml) from the extensions.
+    # Allow an optional ?query or #fragment after the extension.
     alt = "|".join(re.escape(ext.lstrip(".")) for ext in extensions)
-    pattern = rf'href=["\']([^"\']+\.(?:{alt}))["\']'
+    pattern = rf'href=["\']([^"\']+\.(?:{alt})(?:[?#][^"\']*)?)["\']'
 
     links = set()
     for match in re.finditer(pattern, html, re.IGNORECASE):

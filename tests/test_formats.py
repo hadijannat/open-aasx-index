@@ -22,6 +22,17 @@ def test_detect_format() -> None:
     assert detect_format("notes.txt") is None
 
 
+def test_detect_format_with_query_and_fragment() -> None:
+    assert detect_format("https://h/env.xml?download=1") == "xml"
+    assert detect_format("https://h/env.json#raw") == "json"
+    assert detect_format("https://h/model.aasx?token=abc#frag") == "aasx"
+
+
+def test_extract_aas_links_keeps_query_suffix() -> None:
+    html = '<a href="https://h/env.json?download=1">x</a>'
+    assert _extract_aas_links(html, "https://h/") == ["https://h/env.json?download=1"]
+
+
 def test_extensions_constant() -> None:
     assert AAS_FILE_EXTENSIONS == (".aasx", ".json", ".xml")
 

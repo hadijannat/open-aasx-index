@@ -47,6 +47,8 @@ class GitHubSearchState:
     """State for incremental GitHub searching."""
 
     code_search_page: int = 1
+    json_search_page: int = 1
+    xml_search_page: int = 1
     topic_repos_seen: set[str] = field(default_factory=set)
     repos_searched: set[str] = field(default_factory=set)
 
@@ -54,6 +56,8 @@ class GitHubSearchState:
         """Convert to dictionary for persistence."""
         return {
             "code_search_page": self.code_search_page,
+            "json_search_page": self.json_search_page,
+            "xml_search_page": self.xml_search_page,
             "topic_repos_seen": list(self.topic_repos_seen),
             "repos_searched": list(self.repos_searched),
         }
@@ -63,6 +67,8 @@ class GitHubSearchState:
         """Create from dictionary."""
         return cls(
             code_search_page=data.get("code_search_page", 1),
+            json_search_page=data.get("json_search_page", 1),
+            xml_search_page=data.get("xml_search_page", 1),
             topic_repos_seen=set(data.get("topic_repos_seen", [])),
             repos_searched=set(data.get("repos_searched", [])),
         )
@@ -341,15 +347,20 @@ class GitHubSource:
 
         # 1b. Code search for JSON/XML AAS serializations, qualified by an AAS
         # keyword so results are real AAS Environment files, not arbitrary
-        # .json/.xml across GitHub.
-        for fmt in ("json", "xml"):
+        # .json/.xml across GitHub. Track each format's page so repeated runs
+        # progress into deeper pages instead of re-fetching page 1.
+        for fmt, page_attr in (("json", "json_search_page"), ("xml", "xml_search_page")):
             if len(candidates) >= self.max_results:
                 break
-            fmt_candidates, _ = self.search_code(
+            page = getattr(state, page_attr)
+            fmt_candidates, has_more = self.search_code(
                 extension=fmt,
+                page=page,
                 qualifier="assetAdministrationShells",
             )
             candidates.extend(fmt_candidates)
+            if has_more:
+                setattr(state, page_attr, page + 1)
 
         # 2. Topic search
         for topic in self.topics:
