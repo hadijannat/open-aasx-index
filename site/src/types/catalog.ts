@@ -7,7 +7,7 @@ export interface CatalogEntry {
     filename?: string
   }
   provenance: {
-    source_type: 'github' | 'seed' | 'sitemap' | 'commoncrawl'
+    source_type: 'github' | 'seed' | 'sitemap' | 'commoncrawl' | 'aas_server'
     source_ref?: string
     license?: string
     discovered_at: string

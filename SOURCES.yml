@@ -31,15 +31,14 @@ sources:
   # Sitemap sources - crawled via sitemap.xml for broader, fresher discovery.
   # (These activate the sitemap source, which was previously never run because
   # no sitemap-type sources were configured.)
-  - url: https://admin-shell-io.com/
-    name: Admin Shell IO (sitemap)
-    type: sitemap
-    notes: Crawl the full admin-shell-io.com site for AASX files
-
+  #
+  # NOTE: only list domains that actually publish a sitemap. admin-shell-io.com
+  # has no sitemap.xml, so it stays a `seed` (its /samples/ page) above rather
+  # than a sitemap source that would waste harvester cycles.
   - url: https://industrialdigitaltwin.org/
     name: IDTA Website (sitemap)
     type: sitemap
-    notes: IDTA site may link current submodel template example files
+    notes: IDTA site exposes sitemap_index.xml and may link example AASX files
 
   # Eclipse BaSyx samples
   - url: https://github.com/eclipse-basyx/basyx-java-server-sdk
@@ -78,6 +77,23 @@ sources:
     name: Eclipse AASPE Package Explorer
     type: repo
     notes: Eclipse-hosted package explorer with sample packages
+
+# Live AAS servers (used by aas_server.py source).
+#
+# Each AAS instance (shell) hosted by these servers is indexed as one entry via
+# the standardized IDTA Part 2 REST API. This is the path to indexing hundreds
+# or thousands of *instances* rather than a handful of downloadable files.
+#
+# NOTE: Public AAS demo servers are frequently offline; the source degrades
+# gracefully (an unreachable server simply contributes nothing). Add internal
+# or partner servers here to grow the instance count. `type` is `repository`
+# (default) for AAS Repositories or `registry` for AAS Registries.
+aas_servers:
+  - url: https://v3.admin-shell-io.com
+    name: admin-shell-io AASX Server (v3)
+    type: repository
+    api_prefix: /api/v3.0
+    notes: Official IDTA public demo AAS server
 
 # GitHub search topics (used by github.py source)
 github_topics:

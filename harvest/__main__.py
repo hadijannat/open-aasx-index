@@ -17,6 +17,7 @@ from harvest.downloader import (
 )
 from harvest.extract import ExtractionResult, extract_metadata
 from harvest.publish import publish_catalog
+from harvest.sources.aas_server import discover_aas_servers
 from harvest.sources.commoncrawl import CommonCrawlState, discover_commoncrawl
 from harvest.sources.github import GitHubSearchState, discover_github
 from harvest.sources.seeds import discover_seeds, get_allowed_domains, load_sources_config
@@ -262,6 +263,18 @@ def run_harvest(config: HarvestConfig) -> int:
         processed += 1
 
     logger.info(f"Processed {processed} candidates, {len(new_entries)} new entries")
+
+    # Discover live AAS instances (shells) directly from AAS servers. These
+    # arrive as fully-formed entries (metadata already extracted from the API),
+    # so they bypass the download/verify pipeline.
+    if config.source is None or config.source == "aas_server":
+        logger.info("Querying live AAS servers...")
+        instance_entries = discover_aas_servers(
+            config=sources_config,
+            max_results=config.max_servers,
+        )
+        logger.info(f"AAS servers: found {len(instance_entries)} instances")
+        new_entries.extend(instance_entries)
 
     # Update catalog
     if new_entries:

@@ -42,10 +42,10 @@ class VerificationResult:
 def _get_engine_version() -> str:
     """Get the aas-test-engines version string."""
     try:
-        from aas_test_engines import version
+        from importlib.metadata import PackageNotFoundError, version
 
-        return f"aas-test-engines/{version}"
-    except ImportError:
+        return f"aas-test-engines/{version('aas-test-engines')}"
+    except (ImportError, PackageNotFoundError):
         return "aas-test-engines/unknown"
 
 

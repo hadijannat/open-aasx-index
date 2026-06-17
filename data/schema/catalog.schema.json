@@ -44,7 +44,7 @@
       "properties": {
         "source_type": {
           "type": "string",
-          "enum": ["github", "seed", "sitemap", "commoncrawl"],
+          "enum": ["github", "seed", "sitemap", "commoncrawl", "aas_server"],
           "description": "Discovery source type"
         },
         "source_ref": {

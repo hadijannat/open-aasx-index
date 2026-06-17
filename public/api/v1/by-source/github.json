@@ -1,6 +1,6 @@
 {
   "count": 2,
-  "generated_at": "2026-06-17T09:01:02.679712+00:00",
+  "generated_at": "2026-06-17T10:17:54.949725+00:00",
   "limit": null,
   "offset": 0,
   "results": [
@@ -45,7 +45,7 @@
         "source_type": "github"
       },
       "verification": {
-        "engine": "aas-test-engines/<function version at 0x7f0772d49c60>",
+        "engine": "aas-test-engines/unknown",
         "exit_code": 1,
         "report_path": "data/reports/efbdf9f2ea599fd7fa9be04107667e1df47494db3331e8c88b3f9972ad1fee71.json",
         "status": "parseable",

@@ -116,10 +116,15 @@ def publish_stats(entries: list[Any], output_path: Path) -> None:
         source = entry.provenance.get("source_type", "unknown")
         source_counts[source] += 1
 
-    # Count semantic IDs and classify them as current/deprecated/unknown
+    # Count semantic IDs and classify them as current/deprecated/unknown.
+    # Pre-seed all status keys so both breakdowns always expose the same shape
+    # (mirroring how by_status/by_source are consumed), even when a category
+    # has zero entries.
     semantic_id_counts: Counter[str] = Counter()
-    template_status_counts: Counter[str] = Counter()
-    entry_template_status_counts: Counter[str] = Counter()
+    template_status_counts: Counter[str] = Counter({"current": 0, "deprecated": 0, "unknown": 0})
+    entry_template_status_counts: Counter[str] = Counter(
+        {"current": 0, "deprecated": 0, "unknown": 0}
+    )
     for entry in entries:
         semantic_ids = entry.metadata.get("semantic_ids", [])
         entry_statuses: set[str] = set()

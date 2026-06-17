@@ -7,6 +7,10 @@ required.
 
 Base URL: `https://hadijannat.github.io/open-aasx-index/api/v1/`
 
+> Forks/redeployments: the examples below use this project's GitHub Pages base
+> URL. If you host the catalog elsewhere, treat everything from `api/v1/` on as a
+> relative path and prepend your own domain.
+
 Every entry returned by the API is **enriched with submodel-template
 classification**, so you can distinguish *current* IDTA templates from
 *deprecated* ones (see [Current vs. deprecated](#current-vs-deprecated)).

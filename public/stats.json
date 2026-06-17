@@ -7,8 +7,14 @@
     "failed": 1,
     "parseable": 34
   },
-  "by_template_status": {},
+  "by_template_status": {
+    "current": 0,
+    "deprecated": 0,
+    "unknown": 0
+  },
   "entries_by_template_status": {
+    "current": 0,
+    "deprecated": 0,
     "unknown": 35
   },
   "top_semantic_ids": {},

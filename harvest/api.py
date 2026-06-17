@@ -31,7 +31,7 @@ from harvest.templates import TemplateStatus, classify_semantic_id, registry_to_
 API_VERSION = "v1"
 
 STATUS_VALUES = ("verified", "parseable", "failed")
-SOURCE_VALUES = ("github", "seed", "sitemap", "commoncrawl")
+SOURCE_VALUES = ("github", "seed", "sitemap", "commoncrawl", "aas_server")
 TEMPLATE_STATUS_VALUES: tuple[TemplateStatus, ...] = ("current", "deprecated", "unknown")
 
 
