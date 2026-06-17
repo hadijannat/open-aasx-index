@@ -1,0 +1,58 @@
+{
+  "count": 2,
+  "generated_at": "2026-06-17T11:29:45.336704+00:00",
+  "limit": null,
+  "offset": 0,
+  "results": [
+    {
+      "file": {
+        "format": "aasx",
+        "sha256": "",
+        "url": "https://raw.githubusercontent.com/GfSE/CASCaDE-Ontology/1a49ef36ec077b23f1d6caaf4a50b541a3a3e696/AAS/DesignProductAssetInstance.aasx"
+      },
+      "id": "sha256-0000000000000000000000000000000000000000000000000000000000000000",
+      "metadata": {
+        "template_status": "unknown",
+        "templates": []
+      },
+      "provenance": {
+        "discovered_at": "2026-04-26T04:12:04.705457+00:00",
+        "license": null,
+        "source_ref": "GfSE/CASCaDE-Ontology",
+        "source_type": "github"
+      },
+      "verification": {
+        "status": "failed",
+        "summary": "Download failed: Suspicious archive: Invalid ZIP file: File is not a zip file"
+      }
+    },
+    {
+      "file": {
+        "filename": "GitIgnore.AASX",
+        "format": "aasx",
+        "sha256": "efbdf9f2ea599fd7fa9be04107667e1df47494db3331e8c88b3f9972ad1fee71",
+        "size_bytes": 12,
+        "url": "https://raw.githubusercontent.com/GregTrevellick/FilesForEveryExtension/1f489433431c3cd877fa7943ea10101f8669740f/ByLetter/A/GitIgnore.AASX"
+      },
+      "id": "sha256-efbdf9f2ea599fd7fa9be04107667e1df47494db3331e8c88b3f9972ad1fee71",
+      "metadata": {
+        "template_status": "unknown",
+        "templates": []
+      },
+      "provenance": {
+        "discovered_at": "2026-02-01T15:18:59.895034+00:00",
+        "last_verified_at": "2026-02-01T15:18:59.895034+00:00",
+        "license": null,
+        "source_ref": "GregTrevellick/FilesForEveryExtension",
+        "source_type": "github"
+      },
+      "verification": {
+        "engine": "aas-test-engines/unknown",
+        "exit_code": 1,
+        "report_path": "data/reports/efbdf9f2ea599fd7fa9be04107667e1df47494db3331e8c88b3f9972ad1fee71.json",
+        "status": "parseable",
+        "summary": "File parseable but 0 compliance check(s) failed"
+      }
+    }
+  ]
+}

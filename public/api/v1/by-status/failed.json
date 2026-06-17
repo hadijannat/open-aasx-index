@@ -1,0 +1,30 @@
+{
+  "count": 1,
+  "generated_at": "2026-06-17T11:29:45.336704+00:00",
+  "limit": null,
+  "offset": 0,
+  "results": [
+    {
+      "file": {
+        "format": "aasx",
+        "sha256": "",
+        "url": "https://raw.githubusercontent.com/GfSE/CASCaDE-Ontology/1a49ef36ec077b23f1d6caaf4a50b541a3a3e696/AAS/DesignProductAssetInstance.aasx"
+      },
+      "id": "sha256-0000000000000000000000000000000000000000000000000000000000000000",
+      "metadata": {
+        "template_status": "unknown",
+        "templates": []
+      },
+      "provenance": {
+        "discovered_at": "2026-04-26T04:12:04.705457+00:00",
+        "license": null,
+        "source_ref": "GfSE/CASCaDE-Ontology",
+        "source_type": "github"
+      },
+      "verification": {
+        "status": "failed",
+        "summary": "Download failed: Suspicious archive: Invalid ZIP file: File is not a zip file"
+      }
+    }
+  ]
+}

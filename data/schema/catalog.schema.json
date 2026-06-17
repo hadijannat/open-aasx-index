@@ -34,6 +34,11 @@
         "filename": {
           "type": "string",
           "description": "Original filename if available"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["aasx", "json", "xml"],
+          "description": "AAS serialization format of the file"
         }
       }
     },
@@ -44,7 +49,7 @@
       "properties": {
         "source_type": {
           "type": "string",
-          "enum": ["github", "seed", "sitemap", "commoncrawl"],
+          "enum": ["github", "seed", "sitemap", "commoncrawl", "aas_server"],
           "description": "Discovery source type"
         },
         "source_ref": {

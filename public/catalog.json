@@ -1,6 +1,7 @@
 [
   {
     "file": {
+      "format": "aasx",
       "sha256": "",
       "url": "https://raw.githubusercontent.com/GfSE/CASCaDE-Ontology/1a49ef36ec077b23f1d6caaf4a50b541a3a3e696/AAS/DesignProductAssetInstance.aasx"
     },
@@ -20,6 +21,7 @@
   {
     "file": {
       "filename": "09_SchneiderElectric.aasx",
+      "format": "aasx",
       "sha256": "11aba40eb0544cc0e4f4346fe1f091f555a0698304322518a0e23ddc0e47e42d",
       "size_bytes": 17375557,
       "url": "https://admin-shell-io.com/samples/aasx/09_SchneiderElectric.aasx"
@@ -34,7 +36,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/11aba40eb0544cc0e4f4346fe1f091f555a0698304322518a0e23ddc0e47e42d.json",
       "status": "parseable",
@@ -44,6 +46,7 @@
   {
     "file": {
       "filename": "05_Bosch.aasx",
+      "format": "aasx",
       "sha256": "243ea573f7994cdb3dea61930c254fd1818a8449d2d9f85fd0b014f2b0b6a38b",
       "size_bytes": 32950911,
       "url": "https://admin-shell-io.com/samples/aasx/05_Bosch.aasx"
@@ -58,7 +61,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/243ea573f7994cdb3dea61930c254fd1818a8449d2d9f85fd0b014f2b0b6a38b.json",
       "status": "parseable",
@@ -68,6 +71,7 @@
   {
     "file": {
       "filename": "34_Festo.aasx",
+      "format": "aasx",
       "sha256": "2767b4e9c80bbaf451d68911dabae9dc20a9e9f14c17567ef5afeac05b2fe392",
       "size_bytes": 5327502,
       "url": "https://admin-shell-io.com/samples/aasx/34_Festo.aasx"
@@ -82,7 +86,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/2767b4e9c80bbaf451d68911dabae9dc20a9e9f14c17567ef5afeac05b2fe392.json",
       "status": "parseable",
@@ -92,6 +96,7 @@
   {
     "file": {
       "filename": "33_SICK.aasx",
+      "format": "aasx",
       "sha256": "293419ad533a55694bcbfc5ee630aa9ea0b852e4b3ddb26c8d510afe26467b58",
       "size_bytes": 234390,
       "url": "https://admin-shell-io.com/samples/aasx/33_SICK.aasx"
@@ -106,7 +111,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/293419ad533a55694bcbfc5ee630aa9ea0b852e4b3ddb26c8d510afe26467b58.json",
       "status": "parseable",
@@ -116,6 +121,7 @@
   {
     "file": {
       "filename": "15_Siemens.aasx",
+      "format": "aasx",
       "sha256": "3c782bd589aac4d4ea7b9db74c6a22570ed3612611c051eab88b5c94cd3c7a57",
       "size_bytes": 14033241,
       "url": "https://admin-shell-io.com/samples/aasx/15_Siemens.aasx"
@@ -130,7 +136,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/3c782bd589aac4d4ea7b9db74c6a22570ed3612611c051eab88b5c94cd3c7a57.json",
       "status": "parseable",
@@ -140,6 +146,7 @@
   {
     "file": {
       "filename": "23_Festo.aasx",
+      "format": "aasx",
       "sha256": "3ff6fe6e64bd3360dafbad33391228d0140e81b04a0ec3531b399d65bf529f4f",
       "size_bytes": 2207689,
       "url": "https://admin-shell-io.com/samples/aasx/23_Festo.aasx"
@@ -154,7 +161,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/3ff6fe6e64bd3360dafbad33391228d0140e81b04a0ec3531b399d65bf529f4f.json",
       "status": "parseable",
@@ -164,6 +171,7 @@
   {
     "file": {
       "filename": "21_Festo.aasx",
+      "format": "aasx",
       "sha256": "4d626c0b00a720bd54a0355e1d61eeabc32abb1c076e5eea90cef95d3f5860e1",
       "size_bytes": 2245717,
       "url": "https://admin-shell-io.com/samples/aasx/21_Festo.aasx"
@@ -178,7 +186,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/4d626c0b00a720bd54a0355e1d61eeabc32abb1c076e5eea90cef95d3f5860e1.json",
       "status": "parseable",
@@ -188,6 +196,7 @@
   {
     "file": {
       "filename": "26_Festo.aasx",
+      "format": "aasx",
       "sha256": "4de3d19e6db2b1a210bc472b7448988341798375fca17dfc18c44679596f4258",
       "size_bytes": 3500596,
       "url": "https://admin-shell-io.com/samples/aasx/26_Festo.aasx"
@@ -202,7 +211,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/4de3d19e6db2b1a210bc472b7448988341798375fca17dfc18c44679596f4258.json",
       "status": "parseable",
@@ -212,6 +221,7 @@
   {
     "file": {
       "filename": "06_Bosch.aasx",
+      "format": "aasx",
       "sha256": "5005e229a83722c1a8c4468b0f0d790e45431ee5f340a11b37a63060ec9bfcd8",
       "size_bytes": 17668433,
       "url": "https://admin-shell-io.com/samples/aasx/06_Bosch.aasx"
@@ -226,7 +236,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/5005e229a83722c1a8c4468b0f0d790e45431ee5f340a11b37a63060ec9bfcd8.json",
       "status": "parseable",
@@ -236,6 +246,7 @@
   {
     "file": {
       "filename": "13_DKE.aasx",
+      "format": "aasx",
       "sha256": "54cffdfa3072d3cc68d04eddbdce639f8b5b17a6b104e3b60cfc14641d98cfc1",
       "size_bytes": 403620,
       "url": "https://admin-shell-io.com/samples/aasx/13_DKE.aasx"
@@ -250,7 +261,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/54cffdfa3072d3cc68d04eddbdce639f8b5b17a6b104e3b60cfc14641d98cfc1.json",
       "status": "parseable",
@@ -260,6 +271,7 @@
   {
     "file": {
       "filename": "16_Lenze.aasx",
+      "format": "aasx",
       "sha256": "5b75d75acd69856b868f132debf80803050485fc08635d2de999491fb53812c2",
       "size_bytes": 5696771,
       "url": "https://admin-shell-io.com/samples/aasx/16_Lenze.aasx"
@@ -274,7 +286,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/5b75d75acd69856b868f132debf80803050485fc08635d2de999491fb53812c2.json",
       "status": "parseable",
@@ -284,6 +296,7 @@
   {
     "file": {
       "filename": "19_Balluff.aasx",
+      "format": "aasx",
       "sha256": "5f2d5591413253361595b3fbcfd62ff474773a9820c3971fdc0762a554875db0",
       "size_bytes": 6659799,
       "url": "https://admin-shell-io.com/samples/aasx/19_Balluff.aasx"
@@ -298,7 +311,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/5f2d5591413253361595b3fbcfd62ff474773a9820c3971fdc0762a554875db0.json",
       "status": "parseable",
@@ -308,6 +321,7 @@
   {
     "file": {
       "filename": "27_Festo.aasx",
+      "format": "aasx",
       "sha256": "64832cce7a9d3607aa6fc252655b6ff2bf3525d8249842437b9965dcd0b77835",
       "size_bytes": 32125711,
       "url": "https://admin-shell-io.com/samples/aasx/27_Festo.aasx"
@@ -322,7 +336,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/64832cce7a9d3607aa6fc252655b6ff2bf3525d8249842437b9965dcd0b77835.json",
       "status": "parseable",
@@ -332,6 +346,7 @@
   {
     "file": {
       "filename": "32_SICK.aasx",
+      "format": "aasx",
       "sha256": "6595afa701879c4f61ee037ebc00e79b3dc5516dc223717d7ea7a569c85f48a7",
       "size_bytes": 664400,
       "url": "https://admin-shell-io.com/samples/aasx/32_SICK.aasx"
@@ -346,7 +361,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/6595afa701879c4f61ee037ebc00e79b3dc5516dc223717d7ea7a569c85f48a7.json",
       "status": "parseable",
@@ -356,6 +371,7 @@
   {
     "file": {
       "filename": "03_Bosch.aasx",
+      "format": "aasx",
       "sha256": "65b37748d85dab0f69ef6f97ba50f9470974e375b8e292183d99c49cd42083b3",
       "size_bytes": 6519252,
       "url": "https://admin-shell-io.com/samples/aasx/03_Bosch.aasx"
@@ -370,7 +386,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/65b37748d85dab0f69ef6f97ba50f9470974e375b8e292183d99c49cd42083b3.json",
       "status": "parseable",
@@ -380,6 +396,7 @@
   {
     "file": {
       "filename": "18_Hitachi.aasx",
+      "format": "aasx",
       "sha256": "6dbebea0a62b98b0dccdd2e0eba922bde349405db22f6650c4c3160ea1a4bdf3",
       "size_bytes": 28684677,
       "url": "https://admin-shell-io.com/samples/aasx/18_Hitachi.aasx"
@@ -394,7 +411,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/6dbebea0a62b98b0dccdd2e0eba922bde349405db22f6650c4c3160ea1a4bdf3.json",
       "status": "parseable",
@@ -404,6 +421,7 @@
   {
     "file": {
       "filename": "24_Festo.aasx",
+      "format": "aasx",
       "sha256": "7107c9b9144616deeb31154e3c6734bb4075f73102ee29297d7ed140e72e8d50",
       "size_bytes": 953121,
       "url": "https://admin-shell-io.com/samples/aasx/24_Festo.aasx"
@@ -418,7 +436,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/7107c9b9144616deeb31154e3c6734bb4075f73102ee29297d7ed140e72e8d50.json",
       "status": "parseable",
@@ -428,6 +446,7 @@
   {
     "file": {
       "filename": "04_Bosch.aasx",
+      "format": "aasx",
       "sha256": "747471a30e46f73a3e417489cc80d266000410d6e921c54a1f1a1b753f433810",
       "size_bytes": 41567690,
       "url": "https://admin-shell-io.com/samples/aasx/04_Bosch.aasx"
@@ -442,7 +461,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/747471a30e46f73a3e417489cc80d266000410d6e921c54a1f1a1b753f433810.json",
       "status": "parseable",
@@ -452,6 +471,7 @@
   {
     "file": {
       "filename": "12_Pepperl+Fuchs.aasx",
+      "format": "aasx",
       "sha256": "886ec721bb68daa3fbc4af8a653d7478ecf1b6ccb77a7bbb0763b998f2b6cb0d",
       "size_bytes": 524358,
       "url": "https://admin-shell-io.com/samples/aasx/12_Pepperl%2BFuchs.aasx"
@@ -466,7 +486,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/886ec721bb68daa3fbc4af8a653d7478ecf1b6ccb77a7bbb0763b998f2b6cb0d.json",
       "status": "parseable",
@@ -476,6 +496,7 @@
   {
     "file": {
       "filename": "08_SchneiderElectric.aasx",
+      "format": "aasx",
       "sha256": "966b9edc20727c0c4508273d31a9779608fea56f4d700d152b495446dd1078e5",
       "size_bytes": 17448380,
       "url": "https://admin-shell-io.com/samples/aasx/08_SchneiderElectric.aasx"
@@ -490,7 +511,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/966b9edc20727c0c4508273d31a9779608fea56f4d700d152b495446dd1078e5.json",
       "status": "parseable",
@@ -500,6 +521,7 @@
   {
     "file": {
       "filename": "17_ABB.aasx",
+      "format": "aasx",
       "sha256": "a66e7df8d4487b8eb318e3991053a69765cbaaea9e6c735ea2fb2414348eea6b",
       "size_bytes": 6663566,
       "url": "https://admin-shell-io.com/samples/aasx/17_ABB.aasx"
@@ -514,7 +536,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/a66e7df8d4487b8eb318e3991053a69765cbaaea9e6c735ea2fb2414348eea6b.json",
       "status": "parseable",
@@ -524,6 +546,7 @@
   {
     "file": {
       "filename": "10_SchneiderElectric.aasx",
+      "format": "aasx",
       "sha256": "acfdf75f3d5dab6b7086eeee5ffefe2ac1f7fd8d2bb666fae18220f437e0e50e",
       "size_bytes": 17443449,
       "url": "https://admin-shell-io.com/samples/aasx/10_SchneiderElectric.aasx"
@@ -538,7 +561,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/acfdf75f3d5dab6b7086eeee5ffefe2ac1f7fd8d2bb666fae18220f437e0e50e.json",
       "status": "parseable",
@@ -548,6 +571,7 @@
   {
     "file": {
       "filename": "22_Festo.aasx",
+      "format": "aasx",
       "sha256": "af52e7ac581c8d66b83887c51c90e8a07fbbcbbfd3fb4c556a1d1f4a65eeacee",
       "size_bytes": 1758957,
       "url": "https://admin-shell-io.com/samples/aasx/22_Festo.aasx"
@@ -562,7 +586,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/af52e7ac581c8d66b83887c51c90e8a07fbbcbbfd3fb4c556a1d1f4a65eeacee.json",
       "status": "parseable",
@@ -572,6 +596,7 @@
   {
     "file": {
       "filename": "02_Bosch.aasx",
+      "format": "aasx",
       "sha256": "c23c84ee9e8035c4ec3b0b25d7f397c02a3861ebed9b76f363257a049d4d7b67",
       "size_bytes": 15050634,
       "url": "https://admin-shell-io.com/samples/aasx/02_Bosch.aasx"
@@ -586,7 +611,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/c23c84ee9e8035c4ec3b0b25d7f397c02a3861ebed9b76f363257a049d4d7b67.json",
       "status": "parseable",
@@ -596,6 +621,7 @@
   {
     "file": {
       "filename": "36_Murrelektronik.aasx",
+      "format": "aasx",
       "sha256": "c2597e86c6228440324618bd91947261129f94b2733a34caca1923d199b64bbc",
       "size_bytes": 12668393,
       "url": "https://admin-shell-io.com/samples/aasx/36_Murrelektronik.aasx"
@@ -610,7 +636,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/c2597e86c6228440324618bd91947261129f94b2733a34caca1923d199b64bbc.json",
       "status": "parseable",
@@ -620,6 +646,7 @@
   {
     "file": {
       "filename": "14_Siemens.aasx",
+      "format": "aasx",
       "sha256": "c90a7e29d58c22b8297af5c367a1d4c90ee13f096f2fb4ca100ce1f8dccc660a",
       "size_bytes": 18779955,
       "url": "https://admin-shell-io.com/samples/aasx/14_Siemens.aasx"
@@ -634,7 +661,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/c90a7e29d58c22b8297af5c367a1d4c90ee13f096f2fb4ca100ce1f8dccc660a.json",
       "status": "parseable",
@@ -644,6 +671,7 @@
   {
     "file": {
       "filename": "31_SICK.aasx",
+      "format": "aasx",
       "sha256": "cf657440d65bba47ab052b702edcb49cc9fdd6779448ef5540a09dea1c6ac1c7",
       "size_bytes": 332067,
       "url": "https://admin-shell-io.com/samples/aasx/31_SICK.aasx"
@@ -658,7 +686,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/cf657440d65bba47ab052b702edcb49cc9fdd6779448ef5540a09dea1c6ac1c7.json",
       "status": "parseable",
@@ -668,6 +696,7 @@
   {
     "file": {
       "filename": "01_Festo.aasx",
+      "format": "aasx",
       "sha256": "e68e1cd073f608efc66bdaf036fd19e6e266388b87c2c8b8bd1f645425bbb680",
       "size_bytes": 7691839,
       "url": "https://admin-shell-io.com/samples/aasx/01_Festo.aasx"
@@ -682,7 +711,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/e68e1cd073f608efc66bdaf036fd19e6e266388b87c2c8b8bd1f645425bbb680.json",
       "status": "parseable",
@@ -692,6 +721,7 @@
   {
     "file": {
       "filename": "30_Wittenstein.aasx",
+      "format": "aasx",
       "sha256": "eb95a349a35a53e83fd73728a8e7fa48d45aa9b881d36a067b1d15ed278aaaa4",
       "size_bytes": 3938998,
       "url": "https://admin-shell-io.com/samples/aasx/30_Wittenstein.aasx"
@@ -706,7 +736,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/eb95a349a35a53e83fd73728a8e7fa48d45aa9b881d36a067b1d15ed278aaaa4.json",
       "status": "parseable",
@@ -716,6 +746,7 @@
   {
     "file": {
       "filename": "25_Festo.aasx",
+      "format": "aasx",
       "sha256": "ed5810b7cb544b8f029ff265340f4c4ec51c09c8a12099b3d9158f05eafded9c",
       "size_bytes": 2315789,
       "url": "https://admin-shell-io.com/samples/aasx/25_Festo.aasx"
@@ -730,7 +761,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/ed5810b7cb544b8f029ff265340f4c4ec51c09c8a12099b3d9158f05eafded9c.json",
       "status": "parseable",
@@ -740,6 +771,7 @@
   {
     "file": {
       "filename": "GitIgnore.AASX",
+      "format": "aasx",
       "sha256": "efbdf9f2ea599fd7fa9be04107667e1df47494db3331e8c88b3f9972ad1fee71",
       "size_bytes": 12,
       "url": "https://raw.githubusercontent.com/GregTrevellick/FilesForEveryExtension/1f489433431c3cd877fa7943ea10101f8669740f/ByLetter/A/GitIgnore.AASX"
@@ -754,7 +786,7 @@
       "source_type": "github"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x7f0772d49c60>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/efbdf9f2ea599fd7fa9be04107667e1df47494db3331e8c88b3f9972ad1fee71.json",
       "status": "parseable",
@@ -764,6 +796,7 @@
   {
     "file": {
       "filename": "11_SchneiderElectric.aasx",
+      "format": "aasx",
       "sha256": "f74699cf82faba00c17e8aba0fb931ca0526439c107a236a850c4de1093f3498",
       "size_bytes": 3586395,
       "url": "https://admin-shell-io.com/samples/aasx/11_SchneiderElectric.aasx"
@@ -778,7 +811,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/f74699cf82faba00c17e8aba0fb931ca0526439c107a236a850c4de1093f3498.json",
       "status": "parseable",
@@ -788,6 +821,7 @@
   {
     "file": {
       "filename": "20_Festo.aasx",
+      "format": "aasx",
       "sha256": "f8b52f7aff1787a3a9c662fe96fcca740863b15d9cfad405d447509c62fb2cac",
       "size_bytes": 40994833,
       "url": "https://admin-shell-io.com/samples/aasx/20_Festo.aasx"
@@ -802,7 +836,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/f8b52f7aff1787a3a9c662fe96fcca740863b15d9cfad405d447509c62fb2cac.json",
       "status": "parseable",
@@ -812,6 +846,7 @@
   {
     "file": {
       "filename": "07_PhoenixContact.aasx",
+      "format": "aasx",
       "sha256": "fc179bf7362d019a2cf315fea2b6de5997842046782b75ab0a3c1eae5bf9db0d",
       "size_bytes": 981079,
       "url": "https://admin-shell-io.com/samples/aasx/07_PhoenixContact.aasx"
@@ -826,7 +861,7 @@
       "source_type": "seed"
     },
     "verification": {
-      "engine": "aas-test-engines/<function version at 0x1072eca40>",
+      "engine": "aas-test-engines/unknown",
       "exit_code": 1,
       "report_path": "data/reports/fc179bf7362d019a2cf315fea2b6de5997842046782b75ab0a3c1eae5bf9db0d.json",
       "status": "parseable",

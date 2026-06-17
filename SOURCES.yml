@@ -13,9 +13,12 @@ allowed_domains:
   - admin-shell-io.github.io
   - admin-shell-io.com
   - github.com
+  - raw.githubusercontent.com
   - industrialdigitaltwin.org
   - eclipse.dev
   - basyx.org
+  - eclipse-basyx.github.io
+  - xitaso.com
 
 # Seed sources - pages known to contain AASX files
 sources:
@@ -25,10 +28,17 @@ sources:
     type: seed
     notes: Official AAS sample files from admin-shell-io.com
 
-  - url: https://admin-shell-io.github.io/aas-specs-aasx-samples/
-    name: IDTA AAS Spec Samples
-    type: seed
-    notes: Official sample files from the AAS specification
+  # Sitemap sources - crawled via sitemap.xml for broader, fresher discovery.
+  # (These activate the sitemap source, which was previously never run because
+  # no sitemap-type sources were configured.)
+  #
+  # NOTE: only list domains that actually publish a sitemap. admin-shell-io.com
+  # has no sitemap.xml, so it stays a `seed` (its /samples/ page) above rather
+  # than a sitemap source that would waste harvester cycles.
+  - url: https://industrialdigitaltwin.org/
+    name: IDTA Website (sitemap)
+    type: sitemap
+    notes: IDTA site exposes sitemap_index.xml and may link example AASX files
 
   # Eclipse BaSyx samples
   - url: https://github.com/eclipse-basyx/basyx-java-server-sdk
@@ -41,11 +51,49 @@ sources:
     type: repo
     notes: BaSyx Python SDK examples
 
+  - url: https://github.com/eclipse-basyx/basyx-aas-web-ui
+    name: BaSyx AAS Web UI
+    type: repo
+    notes: Demo AAS environments shipped with the BaSyx web UI
+
   # AAS test engines test files
   - url: https://github.com/admin-shell-io/aas-test-engines
     name: AAS Test Engines
     type: repo
     notes: Test fixture files from the compliance checker
+
+  # Reference data and current submodel templates
+  - url: https://github.com/admin-shell-io/aasx-package-explorer
+    name: AASX Package Explorer
+    type: repo
+    notes: Reference tooling with bundled sample AASX packages
+
+  - url: https://github.com/admin-shell-io/aas-specs
+    name: AAS Specifications
+    type: repo
+    notes: Specification repo containing current example AASX files
+
+  - url: https://github.com/eclipse-aaspe/package-explorer
+    name: Eclipse AASPE Package Explorer
+    type: repo
+    notes: Eclipse-hosted package explorer with sample packages
+
+# Live AAS servers (used by aas_server.py source).
+#
+# Each AAS instance (shell) hosted by these servers is indexed as one entry via
+# the standardized IDTA Part 2 REST API. This is the path to indexing hundreds
+# or thousands of *instances* rather than a handful of downloadable files.
+#
+# NOTE: Public AAS demo servers are frequently offline; the source degrades
+# gracefully (an unreachable server simply contributes nothing). Add internal
+# or partner servers here to grow the instance count. `type` is `repository`
+# (default) for AAS Repositories or `registry` for AAS Registries.
+aas_servers:
+  - url: https://v3.admin-shell-io.com
+    name: admin-shell-io AASX Server (v3)
+    type: repository
+    api_prefix: /api/v3.0
+    notes: Official IDTA public demo AAS server
 
 # GitHub search topics (used by github.py source)
 github_topics:
@@ -54,6 +102,9 @@ github_topics:
   - asset-administration-shell
   - digital-twin
   - industry-4-0
+  - industrie40
+  - submodel-template
+  - idta
 
 # GitHub code search extensions
 github_extensions:

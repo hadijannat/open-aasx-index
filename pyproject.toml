@@ -41,6 +41,7 @@ dev = [
 
 [project.scripts]
 harvest = "harvest.__main__:main"
+harvest-query = "harvest.query:main"
 
 [project.urls]
 Homepage = "https://github.com/open-aasx-index/open-aasx-index"

@@ -4,7 +4,7 @@ import { useCatalog, useStats } from '../hooks/useCatalog'
 import type { CatalogEntry } from '../types/catalog'
 
 type StatusFilter = 'all' | 'verified' | 'parseable' | 'failed'
-type SourceFilter = 'all' | 'github' | 'seed' | 'sitemap' | 'commoncrawl'
+type SourceFilter = 'all' | 'github' | 'seed' | 'sitemap' | 'commoncrawl' | 'aas_server'
 
 export function HomePage() {
   const { entries, loading, error } = useCatalog()
@@ -108,6 +108,7 @@ export function HomePage() {
             <option value="seed">Seed</option>
             <option value="sitemap">Sitemap</option>
             <option value="commoncrawl">Common Crawl</option>
+            <option value="aas_server">AAS Server</option>
           </select>
         </div>
       </div>

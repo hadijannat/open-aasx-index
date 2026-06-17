@@ -133,28 +133,41 @@ def _is_domain_allowed(url: str, allowed_domains: set[str]) -> bool:
     return False
 
 
-def _extract_aasx_links(html: str, base_url: str) -> list[str]:
-    """Extract AASX file links from HTML content.
+def _extract_links_by_extension(html: str, base_url: str, extensions: tuple[str, ...]) -> list[str]:
+    """Extract href links ending in any of ``extensions`` from HTML content.
 
     Args:
         html: HTML content
         base_url: Base URL for resolving relative links
+        extensions: File extensions to match (e.g. ``(".aasx", ".json")``)
 
     Returns:
-        List of absolute URLs to AASX files
+        Sorted list of absolute URLs
     """
-    # Find all href attributes that point to .aasx files
-    # Pattern matches href="..." or href='...' with .aasx extension
-    pattern = r'href=["\']([^"\']+\.aasx)["\']'
+    # Build an alternation like (?:aasx|json|xml) from the extensions.
+    # Allow an optional ?query or #fragment after the extension.
+    alt = "|".join(re.escape(ext.lstrip(".")) for ext in extensions)
+    pattern = rf'href=["\']([^"\']+\.(?:{alt})(?:[?#][^"\']*)?)["\']'
 
     links = set()
     for match in re.finditer(pattern, html, re.IGNORECASE):
         href = match.group(1)
-        # Resolve relative URLs
         absolute_url = urljoin(base_url, href)
         links.add(absolute_url)
 
     return sorted(links)
+
+
+def _extract_aasx_links(html: str, base_url: str) -> list[str]:
+    """Extract .aasx file links from HTML content (back-compat helper)."""
+    return _extract_links_by_extension(html, base_url, (".aasx",))
+
+
+def _extract_aas_links(html: str, base_url: str) -> list[str]:
+    """Extract all AAS serialization links (.aasx, .json, .xml) from HTML."""
+    from harvest.formats import AAS_FILE_EXTENSIONS
+
+    return _extract_links_by_extension(html, base_url, AAS_FILE_EXTENSIONS)
 
 
 def _get_filename_from_url(url: str) -> str | None:
@@ -238,7 +251,7 @@ class SeedSource:
         if not html:
             return []
 
-        links = _extract_aasx_links(html, seed.url)
+        links = _extract_aas_links(html, seed.url)
         candidates = []
 
         for link in links:

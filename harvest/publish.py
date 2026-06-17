@@ -8,15 +8,17 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+from harvest.api import publish_api
 from harvest.config import PUBLIC_DIR
 from harvest.storage import CatalogStorage
+from harvest.templates import classify_semantic_id
 
 
 def publish_catalog(
     catalog: CatalogStorage,
     output_dir: Path = PUBLIC_DIR,
 ) -> None:
-    """Publish catalog to JSON, CSV, and stats files.
+    """Publish catalog to JSON, CSV, stats, and the static query API.
 
     Args:
         catalog: Catalog storage to read from
@@ -37,6 +39,9 @@ def publish_catalog(
 
     # Publish stats
     publish_stats(entries, output_dir / "stats.json")
+
+    # Publish the static HTTP query API (api/v1/...)
+    publish_api([e.to_dict() for e in entries], output_dir)
 
 
 def publish_json(entries: list[Any], output_path: Path) -> None:
@@ -111,12 +116,30 @@ def publish_stats(entries: list[Any], output_path: Path) -> None:
         source = entry.provenance.get("source_type", "unknown")
         source_counts[source] += 1
 
-    # Count semantic IDs
+    # Count semantic IDs and classify them as current/deprecated/unknown.
+    # Pre-seed all status keys so both breakdowns always expose the same shape
+    # (mirroring how by_status/by_source are consumed), even when a category
+    # has zero entries.
     semantic_id_counts: Counter[str] = Counter()
+    template_status_counts: Counter[str] = Counter({"current": 0, "deprecated": 0, "unknown": 0})
+    entry_template_status_counts: Counter[str] = Counter(
+        {"current": 0, "deprecated": 0, "unknown": 0}
+    )
     for entry in entries:
         semantic_ids = entry.metadata.get("semantic_ids", [])
+        entry_statuses: set[str] = set()
         for sem_id in semantic_ids:
             semantic_id_counts[sem_id] += 1
+            status = classify_semantic_id(sem_id).status
+            template_status_counts[status] += 1
+            entry_statuses.add(status)
+        # Roll up to an entry-level status (deprecated wins over current)
+        if "deprecated" in entry_statuses:
+            entry_template_status_counts["deprecated"] += 1
+        elif "current" in entry_statuses:
+            entry_template_status_counts["current"] += 1
+        else:
+            entry_template_status_counts["unknown"] += 1
 
     # Build stats object
     stats = {
@@ -125,6 +148,8 @@ def publish_stats(entries: list[Any], output_path: Path) -> None:
         "by_source": dict(source_counts),
         "top_semantic_ids": dict(semantic_id_counts.most_common(20)),
         "unique_semantic_ids": len(semantic_id_counts),
+        "by_template_status": dict(template_status_counts),
+        "entries_by_template_status": dict(entry_template_status_counts),
     }
 
     with output_path.open("w", encoding="utf-8") as f:

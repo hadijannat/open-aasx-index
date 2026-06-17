@@ -1,0 +1,31 @@
+{
+  "api_version": "v1",
+  "endpoints": {
+    "by_format": "api/v1/by-format/{format}.json",
+    "by_source": "api/v1/by-source/{source}.json",
+    "by_status": "api/v1/by-status/{status}.json",
+    "by_template_status": "api/v1/by-template-status/{status}.json",
+    "entries": "api/v1/entries.json",
+    "semantic_ids": "api/v1/semantic-ids.json",
+    "templates": "api/v1/templates.json"
+  },
+  "facets": {
+    "format": {
+      "aasx": 35
+    },
+    "source": {
+      "github": 2,
+      "seed": 33
+    },
+    "status": {
+      "failed": 1,
+      "parseable": 34
+    },
+    "template_status": {
+      "unknown": 35
+    }
+  },
+  "generated_at": "2026-06-17T11:29:45.336704+00:00",
+  "total_entries": 35,
+  "unique_semantic_ids": 0
+}

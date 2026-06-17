@@ -11,8 +11,9 @@ from xml.etree import ElementTree
 import httpx
 
 from harvest.config import REQUEST_TIMEOUT_SECONDS, USER_AGENT
+from harvest.formats import AAS_FILE_EXTENSIONS
 from harvest.rate_limiter import get_rate_limiter
-from harvest.sources.seeds import _extract_aasx_links, _is_domain_allowed
+from harvest.sources.seeds import _extract_aas_links, _is_domain_allowed
 
 logger = logging.getLogger(__name__)
 
@@ -122,8 +123,8 @@ def _is_potential_aasx_page(url: str) -> bool:
     """
     url_lower = url.lower()
 
-    # Direct AASX file
-    if url_lower.endswith(".aasx"):
+    # Direct AAS file (any serialization)
+    if url_lower.endswith(AAS_FILE_EXTENSIONS):
         return True
 
     # Check the path only (not domain)
@@ -267,8 +268,8 @@ class SitemapSource:
         Returns:
             List of discovered candidates
         """
-        # Check if URL itself is an AASX file
-        if page_url.lower().endswith(".aasx"):
+        # Check if URL itself is an AAS file (any serialization)
+        if page_url.lower().endswith(AAS_FILE_EXTENSIONS):
             if _is_domain_allowed(page_url, self.allowed_domains):
                 return [
                     SitemapCandidate(
@@ -283,7 +284,7 @@ class SitemapSource:
         if not content:
             return []
 
-        links = _extract_aasx_links(content, page_url)
+        links = _extract_aas_links(content, page_url)
         candidates = []
 
         for link in links:

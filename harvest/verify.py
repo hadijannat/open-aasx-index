@@ -42,10 +42,10 @@ class VerificationResult:
 def _get_engine_version() -> str:
     """Get the aas-test-engines version string."""
     try:
-        from aas_test_engines import version
+        from importlib.metadata import PackageNotFoundError, version
 
-        return f"aas-test-engines/{version}"
-    except ImportError:
+        return f"aas-test-engines/{version('aas-test-engines')}"
+    except (ImportError, PackageNotFoundError):
         return "aas-test-engines/unknown"
 
 
@@ -97,18 +97,23 @@ def verify_file(
     save_report: bool = True,
     reports_dir: Path = REPORTS_DIR,
     sha256: str | None = None,
+    aas_format: str | None = None,
 ) -> VerificationResult:
-    """Verify an AASX file for AAS compliance.
+    """Verify an AAS file (AASX/JSON/XML) for compliance.
 
     Args:
-        file_path: Path to the AASX file
+        file_path: Path to the AAS file
         save_report: Whether to save the full report to disk
         reports_dir: Directory for saving reports
         sha256: SHA256 hash of the file (for report naming)
+        aas_format: Serialization to validate as (aasx/json/xml). If omitted it
+            is inferred from the filename, falling back to "aasx".
 
     Returns:
         VerificationResult with status and details
     """
+    from harvest.formats import detect_format
+
     engine = _get_engine_version()
 
     # Check file exists
@@ -121,6 +126,9 @@ def verify_file(
             errors=[f"File does not exist: {file_path}"],
         )
 
+    # aas-test-engines validates all three AAS serializations; pick the right one.
+    aas_format = aas_format or detect_format(file_path) or "aasx"
+
     # Run aas-test-engines check_file
     try:
         result = subprocess.run(
@@ -131,7 +139,7 @@ def verify_file(
                 "check_file",
                 str(file_path),
                 "--format",
-                "aasx",
+                aas_format,
                 "--output",
                 "json",
             ],

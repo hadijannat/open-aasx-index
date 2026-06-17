@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import sys
 import tempfile
@@ -16,7 +17,9 @@ from harvest.downloader import (
     download_file,
 )
 from harvest.extract import ExtractionResult, extract_metadata
+from harvest.formats import detect_format, is_probably_aas_file
 from harvest.publish import publish_catalog
+from harvest.sources.aas_server import discover_aas_servers
 from harvest.sources.commoncrawl import CommonCrawlState, discover_commoncrawl
 from harvest.sources.github import GitHubSearchState, discover_github
 from harvest.sources.seeds import discover_seeds, get_allowed_domains, load_sources_config
@@ -36,6 +39,28 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
+
+
+def _load_github_state(cursor: str | None) -> GitHubSearchState:
+    """Rebuild GitHub search state from a persisted cursor.
+
+    Accepts the current JSON form ``{"code_search_page": ...}`` and the legacy
+    plain-integer cursor (which only tracked the code-search page).
+    """
+    state = GitHubSearchState()
+    if not cursor:
+        return state
+    try:
+        data = json.loads(cursor)
+    except (ValueError, TypeError):
+        data = None
+    if isinstance(data, dict):
+        state.code_search_page = int(data.get("code_search_page", 1))
+        state.json_search_page = int(data.get("json_search_page", 1))
+        state.xml_search_page = int(data.get("xml_search_page", 1))
+    elif cursor.isdigit():
+        state.code_search_page = int(cursor)
+    return state
 
 
 def discover_candidates(
@@ -59,16 +84,22 @@ def discover_candidates(
     # GitHub source
     if config.source is None or config.source == "github":
         logger.info("Running GitHub discovery...")
-        github_state = GitHubSearchState()
-        if state.github_cursor:
-            github_state.code_search_page = int(state.github_cursor)
+        github_state = _load_github_state(state.github_cursor)
 
         github_candidates, new_github_state = discover_github(
             max_results=config.max_github,
             state=github_state,
         )
         candidates.extend(github_candidates)
-        state.github_cursor = str(new_github_state.code_search_page)
+        # Persist all per-format search pages so deeper pages are reached over
+        # successive runs (cursor is JSON; legacy plain-int cursors still load).
+        state.github_cursor = json.dumps(
+            {
+                "code_search_page": new_github_state.code_search_page,
+                "json_search_page": new_github_state.json_search_page,
+                "xml_search_page": new_github_state.xml_search_page,
+            }
+        )
         logger.info(f"GitHub: found {len(github_candidates)} candidates")
 
     # Seeds source
@@ -166,12 +197,24 @@ def process_candidate(
         sha256 = download_result.sha256
         entry_id = f"sha256-{sha256}"
 
-        # Verify
+        # Skip JSON/XML files that aren't actually AAS serializations. Discovery
+        # casts a wide net (any .json/.xml link), so we content-sniff here to
+        # avoid recording unrelated documents as failed entries.
+        aas_format = detect_format(download_result.filename or url)
+        if aas_format in ("json", "xml") and not is_probably_aas_file(
+            download_result.path, aas_format
+        ):
+            logger.info(f"Skipping non-AAS {aas_format} file: {url}")
+            return None
+
+        # Verify (pass the upstream-detected format so JSON/XML aren't routed
+        # to the AASX verifier when the filename can't be recovered).
         verification_result: VerificationResult = verify_file(
             file_path=download_result.path,
             save_report=True,
             reports_dir=config.reports_dir,
             sha256=sha256,
+            aas_format=aas_format,
         )
 
         # Extract metadata
@@ -180,14 +223,18 @@ def process_candidate(
         # Build catalog entry
         now = datetime.now(UTC).isoformat()
 
+        file_info: dict[str, Any] = {
+            "url": url,
+            "size_bytes": download_result.size_bytes,
+            "sha256": sha256,
+            "filename": download_result.filename,
+        }
+        if aas_format:
+            file_info["format"] = aas_format
+
         return CatalogEntry(
             id=entry_id,
-            file={
-                "url": url,
-                "size_bytes": download_result.size_bytes,
-                "sha256": sha256,
-                "filename": download_result.filename,
-            },
+            file=file_info,
             provenance={
                 "source_type": candidate.get("source_type", "unknown"),
                 "source_ref": candidate.get("source_ref"),
@@ -253,15 +300,29 @@ def run_harvest(config: HarvestConfig) -> int:
             break
 
         entry = process_candidate(candidate, config)
+        # Mark the URL seen whether or not it produced an entry, so permanent
+        # skips (e.g. non-AAS JSON/XML) aren't re-downloaded every run.
+        state.seen_urls.add(candidate.get("url", ""))
         if entry:
             new_entries.append(entry)
-            state.seen_urls.add(candidate.get("url", ""))
             if entry.file.get("sha256"):
                 state.seen_sha256.add(entry.file["sha256"])
 
         processed += 1
 
     logger.info(f"Processed {processed} candidates, {len(new_entries)} new entries")
+
+    # Discover live AAS instances (shells) directly from AAS servers. These
+    # arrive as fully-formed entries (metadata already extracted from the API),
+    # so they bypass the download/verify pipeline.
+    if config.source is None or config.source == "aas_server":
+        logger.info("Querying live AAS servers...")
+        instance_entries = discover_aas_servers(
+            config=sources_config,
+            max_results=config.max_servers,
+        )
+        logger.info(f"AAS servers: found {len(instance_entries)} instances")
+        new_entries.extend(instance_entries)
 
     # Update catalog
     if new_entries:
