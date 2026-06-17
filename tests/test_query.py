@@ -78,9 +78,7 @@ def test_filter_by_template_status_deprecated() -> None:
 
 
 def test_filter_by_template_family() -> None:
-    result = query_entries(
-        _sample_entries(), QueryFilters(template_family="digital-nameplate")
-    )
+    result = query_entries(_sample_entries(), QueryFilters(template_family="digital-nameplate"))
     assert result["count"] == 2
 
 

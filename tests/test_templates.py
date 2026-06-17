@@ -79,9 +79,7 @@ def test_summarize_status_prefers_deprecated() -> None:
 
 
 def test_summarize_status_current_only() -> None:
-    matches = classify_semantic_ids(
-        ["https://admin-shell.io/idta/nameplate/3/0/Nameplate"]
-    )
+    matches = classify_semantic_ids(["https://admin-shell.io/idta/nameplate/3/0/Nameplate"])
     assert summarize_status(matches) == "current"
 
 

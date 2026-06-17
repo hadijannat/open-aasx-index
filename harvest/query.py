@@ -93,9 +93,9 @@ def _matches(entry: Entry, filters: QueryFilters) -> bool:
             return False
     if filters.template_status or filters.template_family:
         templates = entry.get("metadata", {}).get("templates", [])
-        if filters.template_status and filters.template_status != entry.get(
-            "metadata", {}
-        ).get("template_status"):
+        if filters.template_status and filters.template_status != entry.get("metadata", {}).get(
+            "template_status"
+        ):
             return False
         if filters.template_family and not any(
             t.get("family") == filters.template_family for t in templates
@@ -174,9 +174,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--limit", type=int, default=None, help="Max results (default: all)")
     parser.add_argument("--offset", type=int, default=0, help="Results to skip")
-    parser.add_argument(
-        "--count", action="store_true", help="Print only the number of matches"
-    )
+    parser.add_argument("--count", action="store_true", help="Print only the number of matches")
     return parser
 
 

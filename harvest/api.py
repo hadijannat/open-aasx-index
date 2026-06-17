@@ -154,22 +154,16 @@ def publish_api(
 
     # Pre-computed faceted result sets (already enriched, so skip re-enriching)
     for status in STATUS_VALUES:
-        result = query_entries(
-            enriched, QueryFilters(status=status), enrich=False
-        )
+        result = query_entries(enriched, QueryFilters(status=status), enrich=False)
         result["generated_at"] = generated_at
         _write_json(api_dir / "by-status" / f"{status}.json", result)
 
     for source in SOURCE_VALUES:
-        result = query_entries(
-            enriched, QueryFilters(source_type=source), enrich=False
-        )
+        result = query_entries(enriched, QueryFilters(source_type=source), enrich=False)
         result["generated_at"] = generated_at
         _write_json(api_dir / "by-source" / f"{source}.json", result)
 
     for tstatus in TEMPLATE_STATUS_VALUES:
-        result = query_entries(
-            enriched, QueryFilters(template_status=tstatus), enrich=False
-        )
+        result = query_entries(enriched, QueryFilters(template_status=tstatus), enrich=False)
         result["generated_at"] = generated_at
         _write_json(api_dir / "by-template-status" / f"{tstatus}.json", result)

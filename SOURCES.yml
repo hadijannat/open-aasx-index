@@ -28,11 +28,6 @@ sources:
     type: seed
     notes: Official AAS sample files from admin-shell-io.com
 
-  - url: https://admin-shell-io.github.io/aas-specs-aasx-samples/
-    name: IDTA AAS Spec Samples
-    type: seed
-    notes: Official sample files from the AAS specification
-
   # Sitemap sources - crawled via sitemap.xml for broader, fresher discovery.
   # (These activate the sitemap source, which was previously never run because
   # no sitemap-type sources were configured.)
