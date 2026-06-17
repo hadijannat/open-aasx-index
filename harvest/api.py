@@ -32,6 +32,7 @@ API_VERSION = "v1"
 
 STATUS_VALUES = ("verified", "parseable", "failed")
 SOURCE_VALUES = ("github", "seed", "sitemap", "commoncrawl", "aas_server")
+FORMAT_VALUES = ("aasx", "json", "xml")
 TEMPLATE_STATUS_VALUES: tuple[TemplateStatus, ...] = ("current", "deprecated", "unknown")
 
 
@@ -98,6 +99,9 @@ def publish_api(
     source_counts: Counter[str] = Counter(
         e.get("provenance", {}).get("source_type", "unknown") for e in enriched
     )
+    format_counts: Counter[str] = Counter(
+        e.get("file", {}).get("format", "unknown") for e in enriched
+    )
     template_status_counts: Counter[str] = Counter(
         e.get("metadata", {}).get("template_status", "unknown") for e in enriched
     )
@@ -112,6 +116,7 @@ def publish_api(
         "facets": {
             "status": dict(status_counts),
             "source": dict(source_counts),
+            "format": dict(format_counts),
             "template_status": dict(template_status_counts),
         },
         "unique_semantic_ids": len(semantic_index),
@@ -121,6 +126,7 @@ def publish_api(
             "semantic_ids": f"api/{API_VERSION}/semantic-ids.json",
             "by_status": f"api/{API_VERSION}/by-status/{{status}}.json",
             "by_source": f"api/{API_VERSION}/by-source/{{source}}.json",
+            "by_format": f"api/{API_VERSION}/by-format/{{format}}.json",
             "by_template_status": f"api/{API_VERSION}/by-template-status/{{status}}.json",
         },
     }
@@ -162,6 +168,11 @@ def publish_api(
         result = query_entries(enriched, QueryFilters(source_type=source), enrich=False)
         result["generated_at"] = generated_at
         _write_json(api_dir / "by-source" / f"{source}.json", result)
+
+    for fmt in FORMAT_VALUES:
+        result = query_entries(enriched, QueryFilters(file_format=fmt), enrich=False)
+        result["generated_at"] = generated_at
+        _write_json(api_dir / "by-format" / f"{fmt}.json", result)
 
     for tstatus in TEMPLATE_STATUS_VALUES:
         result = query_entries(enriched, QueryFilters(template_status=tstatus), enrich=False)

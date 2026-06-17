@@ -9,10 +9,16 @@ from typing import Any
 from harvest.api import build_semantic_id_index, publish_api
 
 
-def _entry(entry_id: str, status: str, source: str, semantic_ids: list[str]) -> dict[str, Any]:
+def _entry(
+    entry_id: str,
+    status: str,
+    source: str,
+    semantic_ids: list[str],
+    file_format: str = "aasx",
+) -> dict[str, Any]:
     return {
         "id": entry_id,
-        "file": {"url": f"https://example.com/{entry_id}.aasx"},
+        "file": {"url": f"https://example.com/{entry_id}.{file_format}", "format": file_format},
         "provenance": {"source_type": source},
         "verification": {"status": status},
         "metadata": {"semantic_ids": semantic_ids},
@@ -26,12 +32,14 @@ def _entries() -> list[dict[str, Any]]:
             "verified",
             "github",
             ["https://admin-shell.io/idta/nameplate/3/0/Nameplate"],
+            file_format="aasx",
         ),
         _entry(
             "sha256-b",
             "parseable",
             "seed",
             ["https://admin-shell.io/zvei/nameplate/1/0/Nameplate"],
+            file_format="json",
         ),
     ]
 
@@ -51,6 +59,8 @@ def test_publish_api_writes_expected_files(tmp_path: Path) -> None:
     assert (api / "semantic-ids.json").exists()
     assert (api / "by-status" / "verified.json").exists()
     assert (api / "by-source" / "github.json").exists()
+    assert (api / "by-format" / "aasx.json").exists()
+    assert (api / "by-format" / "json.json").exists()
     assert (api / "by-template-status" / "current.json").exists()
     assert (api / "by-template-status" / "deprecated.json").exists()
 
@@ -61,6 +71,8 @@ def test_index_facets(tmp_path: Path) -> None:
 
     assert index["total_entries"] == 2
     assert index["facets"]["status"]["verified"] == 1
+    assert index["facets"]["format"]["aasx"] == 1
+    assert index["facets"]["format"]["json"] == 1
     assert index["facets"]["template_status"]["current"] == 1
     assert index["facets"]["template_status"]["deprecated"] == 1
 

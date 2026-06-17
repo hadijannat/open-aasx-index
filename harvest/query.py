@@ -58,6 +58,7 @@ class QueryFilters:
     text: str | None = None
     status: str | None = None  # verification status
     source_type: str | None = None
+    file_format: str | None = None  # aasx/json/xml
     semantic_id: str | None = None  # substring match
     template_family: str | None = None
     template_status: TemplateStatus | None = None  # current/deprecated/unknown
@@ -86,6 +87,8 @@ def _matches(entry: Entry, filters: QueryFilters) -> bool:
         filters.source_type
         and entry.get("provenance", {}).get("source_type") != filters.source_type
     ):
+        return False
+    if filters.file_format and entry.get("file", {}).get("format") != filters.file_format:
         return False
     if filters.semantic_id:
         sem_ids = entry.get("metadata", {}).get("semantic_ids", []) or []
@@ -165,6 +168,12 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--catalog", type=Path, default=CATALOG_JSON, help="Path to catalog.json")
     parser.add_argument("--status", help="Filter by verification status")
     parser.add_argument("--source", dest="source_type", help="Filter by source type")
+    parser.add_argument(
+        "--format",
+        dest="file_format",
+        choices=["aasx", "json", "xml"],
+        help="Filter by AAS serialization format",
+    )
     parser.add_argument("--semantic-id", help="Filter by semantic ID substring")
     parser.add_argument("--template-family", help="Filter by template family key")
     parser.add_argument(
@@ -187,6 +196,7 @@ def main(argv: list[str] | None = None) -> int:
         text=args.text,
         status=args.status,
         source_type=args.source_type,
+        file_format=args.file_format,
         semantic_id=args.semantic_id,
         template_family=args.template_family,
         template_status=args.template_status,

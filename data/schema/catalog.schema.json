@@ -34,6 +34,11 @@
         "filename": {
           "type": "string",
           "description": "Original filename if available"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["aasx", "json", "xml"],
+          "description": "AAS serialization format of the file"
         }
       }
     },

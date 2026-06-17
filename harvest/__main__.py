@@ -16,6 +16,7 @@ from harvest.downloader import (
     download_file,
 )
 from harvest.extract import ExtractionResult, extract_metadata
+from harvest.formats import detect_format, is_probably_aas_file
 from harvest.publish import publish_catalog
 from harvest.sources.aas_server import discover_aas_servers
 from harvest.sources.commoncrawl import CommonCrawlState, discover_commoncrawl
@@ -167,6 +168,16 @@ def process_candidate(
         sha256 = download_result.sha256
         entry_id = f"sha256-{sha256}"
 
+        # Skip JSON/XML files that aren't actually AAS serializations. Discovery
+        # casts a wide net (any .json/.xml link), so we content-sniff here to
+        # avoid recording unrelated documents as failed entries.
+        aas_format = detect_format(download_result.filename or url)
+        if aas_format in ("json", "xml") and not is_probably_aas_file(
+            download_result.path, aas_format
+        ):
+            logger.info(f"Skipping non-AAS {aas_format} file: {url}")
+            return None
+
         # Verify
         verification_result: VerificationResult = verify_file(
             file_path=download_result.path,
@@ -181,14 +192,18 @@ def process_candidate(
         # Build catalog entry
         now = datetime.now(UTC).isoformat()
 
+        file_info: dict[str, Any] = {
+            "url": url,
+            "size_bytes": download_result.size_bytes,
+            "sha256": sha256,
+            "filename": download_result.filename,
+        }
+        if aas_format:
+            file_info["format"] = aas_format
+
         return CatalogEntry(
             id=entry_id,
-            file={
-                "url": url,
-                "size_bytes": download_result.size_bytes,
-                "sha256": sha256,
-                "filename": download_result.filename,
-            },
+            file=file_info,
             provenance={
                 "source_type": candidate.get("source_type", "unknown"),
                 "source_ref": candidate.get("source_ref"),

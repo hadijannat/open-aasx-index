@@ -125,88 +125,118 @@ def _collect_semantic_ids(element: Any, semantic_ids: set[str]) -> None:
                 _collect_semantic_ids(sub_element, semantic_ids)
 
 
+def _read_object_store(file_path: Path, fmt: str) -> Any:
+    """Load AAS objects from an AASX, JSON, or XML file into an object store.
+
+    Returns a BaSyx object store. Raises on parse failure.
+    """
+    from basyx.aas import model
+
+    if fmt == "aasx":
+        from basyx.aas.adapter.aasx import AASXReader, DictSupplementaryFileContainer
+
+        object_store: Any = model.DictObjectStore()
+        with AASXReader(str(file_path)) as reader:
+            reader.read_into(object_store, DictSupplementaryFileContainer())
+        return object_store
+
+    if fmt == "json":
+        from basyx.aas.adapter.json import read_aas_json_file
+
+        with file_path.open(encoding="utf-8") as f:
+            return read_aas_json_file(f)
+
+    if fmt == "xml":
+        from basyx.aas.adapter.xml import read_aas_xml_file
+
+        with file_path.open("rb") as f:
+            return read_aas_xml_file(f)
+
+    raise ValueError(f"Unsupported AAS format: {fmt}")
+
+
+def _result_from_object_store(object_store: Any) -> ExtractionResult:
+    """Build an ExtractionResult by walking shells/submodels in an object store."""
+    from basyx.aas import model
+
+    shells: list[ShellInfo] = []
+    submodels: list[SubmodelInfo] = []
+    semantic_ids: set[str] = set()
+
+    for obj in object_store:
+        if isinstance(obj, model.AssetAdministrationShell):
+            global_asset_id = None
+            if obj.asset_information and obj.asset_information.global_asset_id:
+                global_asset_id = str(obj.asset_information.global_asset_id)
+
+            shells.append(
+                ShellInfo(
+                    id_short=obj.id_short,
+                    id=str(obj.id),
+                    global_asset_id=global_asset_id,
+                )
+            )
+
+        elif isinstance(obj, model.Submodel):
+            submodel_semantic_id = _get_reference_value(obj.semantic_id)
+            if submodel_semantic_id:
+                semantic_ids.add(submodel_semantic_id)
+
+            submodels.append(
+                SubmodelInfo(
+                    id_short=obj.id_short,
+                    id=str(obj.id),
+                    semantic_id=submodel_semantic_id,
+                )
+            )
+
+            if hasattr(obj, "submodel_element"):
+                for element in obj.submodel_element:
+                    _collect_semantic_ids(element, semantic_ids)
+
+    return ExtractionResult(
+        success=True,
+        shells=shells,
+        submodels=submodels,
+        semantic_ids=sorted(semantic_ids),
+    )
+
+
 def extract_metadata(file_path: Path) -> ExtractionResult:
-    """Extract metadata from an AASX file.
+    """Extract metadata from an AAS file (AASX, JSON, or XML).
 
     Args:
-        file_path: Path to the AASX file
+        file_path: Path to the AAS file
 
     Returns:
         ExtractionResult with extracted metadata or error
     """
+    from harvest.formats import detect_format
+
     if not file_path.exists():
         return ExtractionResult(
             success=False,
             error=f"File not found: {file_path}",
         )
 
+    fmt = detect_format(file_path)
+    if fmt is None:
+        return ExtractionResult(
+            success=False,
+            error=f"Unsupported AAS serialization: {file_path.name}",
+        )
+
     try:
-        from basyx.aas import model
-        from basyx.aas.adapter.aasx import AASXReader
+        import basyx.aas  # noqa: F401
     except ImportError as e:
         return ExtractionResult(
             success=False,
             error=f"BaSyx SDK not available: {e}",
         )
 
-    shells: list[ShellInfo] = []
-    submodels: list[SubmodelInfo] = []
-    semantic_ids: set[str] = set()
-
     try:
-        with AASXReader(str(file_path)) as reader:
-            # Create an object store to hold the loaded objects
-            object_store: Any = model.DictObjectStore()
-
-            # Create a file store for supplementary files (thumbnails, docs, etc.)
-            from basyx.aas.adapter.aasx import DictSupplementaryFileContainer
-
-            file_store: Any = DictSupplementaryFileContainer()
-
-            # Read the AASX content into both stores
-            reader.read_into(object_store, file_store)
-
-            # Extract shells
-            for obj in object_store:
-                if isinstance(obj, model.AssetAdministrationShell):
-                    global_asset_id = None
-                    if obj.asset_information and obj.asset_information.global_asset_id:
-                        global_asset_id = str(obj.asset_information.global_asset_id)
-
-                    shells.append(
-                        ShellInfo(
-                            id_short=obj.id_short,
-                            id=str(obj.id),
-                            global_asset_id=global_asset_id,
-                        )
-                    )
-
-                elif isinstance(obj, model.Submodel):
-                    # Get submodel semantic ID
-                    submodel_semantic_id = _get_reference_value(obj.semantic_id)
-                    if submodel_semantic_id:
-                        semantic_ids.add(submodel_semantic_id)
-
-                    submodels.append(
-                        SubmodelInfo(
-                            id_short=obj.id_short,
-                            id=str(obj.id),
-                            semantic_id=submodel_semantic_id,
-                        )
-                    )
-
-                    # Collect semantic IDs from submodel elements
-                    if hasattr(obj, "submodel_element"):
-                        for element in obj.submodel_element:
-                            _collect_semantic_ids(element, semantic_ids)
-
-        return ExtractionResult(
-            success=True,
-            shells=shells,
-            submodels=submodels,
-            semantic_ids=sorted(semantic_ids),
-        )
-
+        object_store = _read_object_store(file_path, fmt)
+        return _result_from_object_store(object_store)
     except Exception as e:
         logger.warning(f"Failed to extract metadata from {file_path}: {e}")
         return ExtractionResult(

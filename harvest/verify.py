@@ -109,6 +109,8 @@ def verify_file(
     Returns:
         VerificationResult with status and details
     """
+    from harvest.formats import detect_format
+
     engine = _get_engine_version()
 
     # Check file exists
@@ -121,6 +123,9 @@ def verify_file(
             errors=[f"File does not exist: {file_path}"],
         )
 
+    # aas-test-engines validates all three AAS serializations; pick the right one.
+    aas_format = detect_format(file_path) or "aasx"
+
     # Run aas-test-engines check_file
     try:
         result = subprocess.run(
@@ -131,7 +136,7 @@ def verify_file(
                 "check_file",
                 str(file_path),
                 "--format",
-                "aasx",
+                aas_format,
                 "--output",
                 "json",
             ],

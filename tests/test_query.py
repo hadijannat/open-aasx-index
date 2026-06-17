@@ -14,10 +14,11 @@ def _entry(
     source: str = "seed",
     semantic_ids: list[str] | None = None,
     url: str = "https://example.com/file.aasx",
+    file_format: str = "aasx",
 ) -> dict[str, Any]:
     return {
         "id": entry_id,
-        "file": {"url": url, "filename": "file.aasx"},
+        "file": {"url": url, "filename": "file.aasx", "format": file_format},
         "provenance": {"source_type": source},
         "verification": {"status": status},
         "metadata": {"semantic_ids": semantic_ids or []},
@@ -63,6 +64,16 @@ def test_filter_by_status() -> None:
 def test_filter_by_source() -> None:
     result = query_entries(_sample_entries(), QueryFilters(source_type="seed"))
     assert result["count"] == 2
+
+
+def test_filter_by_format() -> None:
+    entries = [
+        _entry("sha256-1", file_format="aasx"),
+        _entry("sha256-2", file_format="json"),
+        _entry("sha256-3", file_format="xml"),
+    ]
+    assert query_entries(entries, QueryFilters(file_format="json"))["count"] == 1
+    assert query_entries(entries, QueryFilters(file_format="aasx"))["count"] == 1
 
 
 def test_filter_by_template_status_current() -> None:

@@ -14,7 +14,7 @@ Discover, download, and contribute AASX files from across the web — all verifi
 
 ## What is this?
 
-Open AASX Index automatically discovers AASX files from GitHub repositories, official sources, and community contributions. Every file is:
+Open AASX Index automatically discovers Asset Administration Shell files — in all three serializations (**AASX**, **JSON**, **XML**) — plus live AAS **instances** from AAS servers, drawn from GitHub repositories, official sources, and community contributions. Every file is:
 
 - **Downloaded** safely (size limits, zip-bomb detection)
 - **Verified** against the AAS specification using [aas-test-engines](https://github.com/admin-shell-io/aas-test-engines)

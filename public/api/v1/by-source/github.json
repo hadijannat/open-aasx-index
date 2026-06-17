@@ -1,11 +1,12 @@
 {
   "count": 2,
-  "generated_at": "2026-06-17T10:17:54.949725+00:00",
+  "generated_at": "2026-06-17T11:29:45.336704+00:00",
   "limit": null,
   "offset": 0,
   "results": [
     {
       "file": {
+        "format": "aasx",
         "sha256": "",
         "url": "https://raw.githubusercontent.com/GfSE/CASCaDE-Ontology/1a49ef36ec077b23f1d6caaf4a50b541a3a3e696/AAS/DesignProductAssetInstance.aasx"
       },
@@ -28,6 +29,7 @@
     {
       "file": {
         "filename": "GitIgnore.AASX",
+        "format": "aasx",
         "sha256": "efbdf9f2ea599fd7fa9be04107667e1df47494db3331e8c88b3f9972ad1fee71",
         "size_bytes": 12,
         "url": "https://raw.githubusercontent.com/GregTrevellick/FilesForEveryExtension/1f489433431c3cd877fa7943ea10101f8669740f/ByLetter/A/GitIgnore.AASX"

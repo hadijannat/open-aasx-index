@@ -183,6 +183,7 @@ class GitHubSource:
         extension: str = "aasx",
         page: int = 1,
         per_page: int = 30,
+        qualifier: str | None = None,
     ) -> tuple[list[GitHubCandidate], bool]:
         """Search GitHub code for files with the given extension.
 
@@ -190,11 +191,16 @@ class GitHubSource:
             extension: File extension to search for
             page: Page number (1-indexed)
             per_page: Results per page (max 100)
+            qualifier: Optional content keyword to narrow results. Required for
+                broad extensions like ``json``/``xml`` so the search matches AAS
+                files (e.g. ``assetAdministrationShells``) and not the whole web.
 
         Returns:
             Tuple of (candidates, has_more_pages)
         """
         query = f"extension:{extension}"
+        if qualifier:
+            query = f"{qualifier} {query}"
         url = f"{GITHUB_API}/search/code"
         params = {
             "q": query,
@@ -332,6 +338,18 @@ class GitHubSource:
 
         if has_more:
             state.code_search_page += 1
+
+        # 1b. Code search for JSON/XML AAS serializations, qualified by an AAS
+        # keyword so results are real AAS Environment files, not arbitrary
+        # .json/.xml across GitHub.
+        for fmt in ("json", "xml"):
+            if len(candidates) >= self.max_results:
+                break
+            fmt_candidates, _ = self.search_code(
+                extension=fmt,
+                qualifier="assetAdministrationShells",
+            )
+            candidates.extend(fmt_candidates)
 
         # 2. Topic search
         for topic in self.topics:

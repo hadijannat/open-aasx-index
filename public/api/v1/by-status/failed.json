@@ -1,11 +1,12 @@
 {
   "count": 1,
-  "generated_at": "2026-06-17T10:17:54.949725+00:00",
+  "generated_at": "2026-06-17T11:29:45.336704+00:00",
   "limit": null,
   "offset": 0,
   "results": [
     {
       "file": {
+        "format": "aasx",
         "sha256": "",
         "url": "https://raw.githubusercontent.com/GfSE/CASCaDE-Ontology/1a49ef36ec077b23f1d6caaf4a50b541a3a3e696/AAS/DesignProductAssetInstance.aasx"
       },

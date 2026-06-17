@@ -24,8 +24,17 @@ classification**, so you can distinguish *current* IDTA templates from
 | `templates.json` | The IDTA submodel-template registry + per-template usage counts |
 | `semantic-ids.json` | Every semantic ID found, classified, with usage counts and entry refs |
 | `by-status/{status}.json` | Entries filtered by `verified` \| `parseable` \| `failed` |
-| `by-source/{source}.json` | Entries filtered by `github` \| `seed` \| `sitemap` \| `commoncrawl` |
+| `by-source/{source}.json` | Entries filtered by `github` \| `seed` \| `sitemap` \| `commoncrawl` \| `aas_server` |
+| `by-format/{format}.json` | Entries filtered by AAS serialization: `aasx` \| `json` \| `xml` |
 | `by-template-status/{status}.json` | Entries filtered by `current` \| `deprecated` \| `unknown` |
+
+### AAS serialization formats
+
+The index covers all three AAS serializations — **AASX** (Part 5 OPC package),
+**JSON** and **XML** (Part 1 mappings) — discovered as files on the web, plus
+live **instances** enumerated from AAS servers. (PDF is not an AAS format; it
+only appears as a supplementary file inside an AASX.) Each entry records its
+`file.format`, exposed via the `by-format/` endpoints and the `format` facet.
 
 ### Example: find files using *current* templates only
 
@@ -66,6 +75,9 @@ The same query engine is available offline via the `harvest-query` command (or
 ```bash
 # All files using current templates
 harvest-query --template-status current
+
+# Only JSON-serialized AAS files
+harvest-query --format json
 
 # Count deprecated Digital Nameplate usages
 harvest-query --template-family digital-nameplate --template-status deprecated --count
