@@ -7,6 +7,10 @@
     "failed": 1,
     "parseable": 34
   },
+  "by_template_status": {},
+  "entries_by_template_status": {
+    "unknown": 35
+  },
   "top_semantic_ids": {},
   "total_entries": 35,
   "unique_semantic_ids": 0

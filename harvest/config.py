@@ -50,9 +50,9 @@ VerificationStatus = Literal["verified", "parseable", "failed"]
 class HarvestConfig:
     """Configuration for a harvest run."""
 
-    max_validate: int = 200
-    max_github: int = 100
-    max_web: int = 50
+    max_validate: int = 400
+    max_github: int = 200
+    max_web: int = 100
     dry_run: bool = False
     source: str | None = None
     verbose: bool = False
@@ -80,20 +80,20 @@ def parse_args(args: list[str] | None = None) -> HarvestConfig:
     parser.add_argument(
         "--max-validate",
         type=int,
-        default=200,
-        help="Maximum files to verify per run (default: 200)",
+        default=400,
+        help="Maximum files to verify per run (default: 400)",
     )
     parser.add_argument(
         "--max-github",
         type=int,
-        default=100,
-        help="Maximum items from GitHub (default: 100)",
+        default=200,
+        help="Maximum items from GitHub (default: 200)",
     )
     parser.add_argument(
         "--max-web",
         type=int,
-        default=50,
-        help="Maximum items from web sources (default: 50)",
+        default=100,
+        help="Maximum items from web sources (default: 100)",
     )
     parser.add_argument(
         "--dry-run",

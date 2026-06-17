@@ -139,6 +139,21 @@ The catalog is freely available in multiple formats:
 | **JSON** | Full metadata, programmatic access | [catalog.json](https://hadijannat.github.io/open-aasx-index/catalog.json) |
 | **CSV** | Spreadsheets, quick analysis | [catalog.csv](https://hadijannat.github.io/open-aasx-index/catalog.csv) |
 | **Stats** | Dashboard widgets, monitoring | [stats.json](https://hadijannat.github.io/open-aasx-index/stats.json) |
+| **Query API** | Filtered, template-aware querying | [api/v1/index.json](https://hadijannat.github.io/open-aasx-index/api/v1/index.json) |
+
+### Query API (current vs. deprecated)
+
+A static HTTP query API is published under `api/v1/` with predictable JSON
+endpoints — including filtering by **current vs. deprecated IDTA submodel
+templates**, so you can find the *new* AAS data instead of legacy samples:
+
+```bash
+# Files using current (non-deprecated) IDTA submodel templates
+curl https://hadijannat.github.io/open-aasx-index/api/v1/by-template-status/current.json
+```
+
+See [docs/API.md](docs/API.md) for the full endpoint reference and the
+`harvest-query` CLI.
 
 ### Quick Examples
 

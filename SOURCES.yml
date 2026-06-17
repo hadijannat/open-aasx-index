@@ -13,9 +13,12 @@ allowed_domains:
   - admin-shell-io.github.io
   - admin-shell-io.com
   - github.com
+  - raw.githubusercontent.com
   - industrialdigitaltwin.org
   - eclipse.dev
   - basyx.org
+  - eclipse-basyx.github.io
+  - xitaso.com
 
 # Seed sources - pages known to contain AASX files
 sources:
@@ -30,6 +33,19 @@ sources:
     type: seed
     notes: Official sample files from the AAS specification
 
+  # Sitemap sources - crawled via sitemap.xml for broader, fresher discovery.
+  # (These activate the sitemap source, which was previously never run because
+  # no sitemap-type sources were configured.)
+  - url: https://admin-shell-io.com/
+    name: Admin Shell IO (sitemap)
+    type: sitemap
+    notes: Crawl the full admin-shell-io.com site for AASX files
+
+  - url: https://industrialdigitaltwin.org/
+    name: IDTA Website (sitemap)
+    type: sitemap
+    notes: IDTA site may link current submodel template example files
+
   # Eclipse BaSyx samples
   - url: https://github.com/eclipse-basyx/basyx-java-server-sdk
     name: BaSyx Java SDK
@@ -41,11 +57,32 @@ sources:
     type: repo
     notes: BaSyx Python SDK examples
 
+  - url: https://github.com/eclipse-basyx/basyx-aas-web-ui
+    name: BaSyx AAS Web UI
+    type: repo
+    notes: Demo AAS environments shipped with the BaSyx web UI
+
   # AAS test engines test files
   - url: https://github.com/admin-shell-io/aas-test-engines
     name: AAS Test Engines
     type: repo
     notes: Test fixture files from the compliance checker
+
+  # Reference data and current submodel templates
+  - url: https://github.com/admin-shell-io/aasx-package-explorer
+    name: AASX Package Explorer
+    type: repo
+    notes: Reference tooling with bundled sample AASX packages
+
+  - url: https://github.com/admin-shell-io/aas-specs
+    name: AAS Specifications
+    type: repo
+    notes: Specification repo containing current example AASX files
+
+  - url: https://github.com/eclipse-aaspe/package-explorer
+    name: Eclipse AASPE Package Explorer
+    type: repo
+    notes: Eclipse-hosted package explorer with sample packages
 
 # GitHub search topics (used by github.py source)
 github_topics:
@@ -54,6 +91,9 @@ github_topics:
   - asset-administration-shell
   - digital-twin
   - industry-4-0
+  - industrie40
+  - submodel-template
+  - idta
 
 # GitHub code search extensions
 github_extensions:

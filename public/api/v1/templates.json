@@ -1,0 +1,55 @@
+{
+  "counts": {},
+  "generated_at": "2026-06-17T09:01:02.679712+00:00",
+  "registry": [
+    {
+      "current_semantic_id": "https://admin-shell.io/idta/nameplate/3/0/Nameplate",
+      "current_version": "3.0",
+      "idta": "IDTA 02006",
+      "key": "digital-nameplate",
+      "name": "Digital Nameplate"
+    },
+    {
+      "current_semantic_id": "https://admin-shell.io/idta/TechnicalData/Submodel/1/2",
+      "current_version": "1.2",
+      "idta": "IDTA 02003",
+      "key": "technical-data",
+      "name": "Generic Frame for Technical Data"
+    },
+    {
+      "current_semantic_id": "https://admin-shell.io/idta/HandoverDocumentation/1/2/Submodel",
+      "current_version": "1.2",
+      "idta": "IDTA 02004",
+      "key": "handover-documentation",
+      "name": "Handover Documentation"
+    },
+    {
+      "current_semantic_id": "https://admin-shell.io/idta/HierarchicalStructures/1/1/Submodel",
+      "current_version": "1.1",
+      "idta": "IDTA 02011",
+      "key": "hierarchical-structures",
+      "name": "Hierarchical Structures enabling Bills of Material"
+    },
+    {
+      "current_semantic_id": "https://admin-shell.io/idta/TimeSeries/1/1/Submodel",
+      "current_version": "1.1",
+      "idta": "IDTA 02008",
+      "key": "time-series-data",
+      "name": "Time Series Data"
+    },
+    {
+      "current_semantic_id": "https://admin-shell.io/idta/CarbonFootprint/1/0/Submodel",
+      "current_version": "1.0",
+      "idta": "IDTA 02023",
+      "key": "carbon-footprint",
+      "name": "Carbon Footprint"
+    },
+    {
+      "current_semantic_id": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/Submodel",
+      "current_version": "1.0",
+      "idta": "IDTA 02017",
+      "key": "asset-interfaces-description",
+      "name": "Asset Interfaces Description"
+    }
+  ]
+}
